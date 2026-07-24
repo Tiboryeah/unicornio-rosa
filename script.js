@@ -165,7 +165,7 @@ function getAudioContext() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
-  if (audioCtx.state === 'suspended') {
+  if (audioCtx && audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
   return audioCtx;
@@ -175,6 +175,18 @@ function playMagicalChime(freq = 523.25, type = 'sine') {
   if (!isSoundEnabled) return;
   try {
     const ctx = getAudioContext();
+    if (!ctx) return;
+
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(() => playChimeNode(ctx, freq, type)).catch(() => {});
+    } else {
+      playChimeNode(ctx, freq, type);
+    }
+  } catch (e) {}
+}
+
+function playChimeNode(ctx, freq, type) {
+  try {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -182,7 +194,7 @@ function playMagicalChime(freq = 523.25, type = 'sine') {
     osc.frequency.setValueAtTime(freq, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + 0.3);
 
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
 
     osc.connect(gain);
@@ -216,10 +228,20 @@ function initAudioSynthesizer() {
     bgMusic.volume = 0.25;
   }
 
-  soundBtn.addEventListener('click', () => {
+  soundBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     isSoundEnabled = !isSoundEnabled;
     soundBtn.classList.toggle('active', isSoundEnabled);
-    if (isSoundEnabled) playMagicalChime(880);
+    
+    if (isSoundEnabled) {
+      const ctx = getAudioContext();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume().then(() => playUnicornArpeggio()).catch(() => {});
+      } else {
+        playUnicornArpeggio();
+      }
+      spawnHeartExplosion(soundBtn.getBoundingClientRect());
+    }
   });
 
   function toggleMusic() {
