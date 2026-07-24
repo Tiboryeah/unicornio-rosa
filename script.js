@@ -232,7 +232,7 @@ function initAudioSynthesizer() {
     e.stopPropagation();
     isSoundEnabled = !isSoundEnabled;
     soundBtn.classList.toggle('active', isSoundEnabled);
-    
+
     if (isSoundEnabled) {
       const ctx = getAudioContext();
       if (ctx && ctx.state === 'suspended') {
@@ -365,126 +365,132 @@ function initReasonsGrid() {
    ========================================================================== */
 
 const nesvi100Vouchers = [
-  // Level 1 - 10
-  { level: 1, title: 'Vale por tomarse de las manos por primera vez', desc: 'Sentir la calidez y el temblor dulce de nuestros dedos entrelazados.', icon: 'fa-solid fa-hand-holding-heart', cat: 'shy' },
-  { level: 2, title: 'Vale por una caminata suave sintiendo tu mano en la mía', desc: 'Caminar a tu paso disfrutando del viento y de tu cercanía.', icon: 'fa-solid fa-person-walking', cat: 'shy' },
-  { level: 3, title: 'Vale por un abrazo sorpresa por la espalda', desc: 'Envolverte en mis brazos durante un minuto entero para que te sientas cuidada.', icon: 'fa-solid fa-heart', cat: 'shy' },
-  { level: 4, title: 'Vale por un mensaje dulce de buenos días', desc: 'Un texto tierno para recordarte lo hermosa que eres al despertar.', icon: 'fa-solid fa-envelope', cat: 'shy' },
-  { level: 5, title: 'Vale por un beso suave en la mejilla', desc: 'Un beso tierno que te haga sonreír y sonrojar ligeramente.', icon: 'fa-solid fa-face-kiss-wink-heart', cat: 'shy' },
-  { level: 6, title: 'Vale por compartir un postre dulce con la misma cuchara', desc: 'Probar tus saboreados preferidos entre miradas complicitarias.', icon: 'fa-solid fa-mug-hot', cat: 'romantic' },
-  { level: 7, title: 'Vale por un susurro al oído diciéndote lo especial que eres', desc: 'Decirte bajito algo hermoso al oído que acelere tus latidos.', icon: 'fa-solid fa-comment-dots', cat: 'shy' },
-  { level: 8, title: 'Vale por una taza de café y una charla profunda', desc: 'Platicar de la vida sin tiempo ni prisas sintiendo tu calma.', icon: 'fa-solid fa-comments', cat: 'romantic' },
-  { level: 9, title: 'Vale por una caricia en el rostro contemplando tus ojos', desc: 'Acariciar tu mejilla mientras me pierdo en el brillo de tu mirada.', icon: 'fa-solid fa-eye', cat: 'shy' },
-  { level: 10, title: 'Vale por 5 minutos de besos apasionados e intensos', desc: '¡VALE PÍCARO! Besos profundos e ininterrumpidos que te quiten el aliento.', icon: 'fa-solid fa-fire', cat: 'spicy', isSpicy: true },
+  // Niveles 1 - 10
+  { level: 1, title: 'Tu mano en la mía', desc: 'Salir a caminar agarrados de la mano, sin soltarla a los cinco minutos.', icon: 'fa-solid fa-hand-holding-heart', cat: 'shy' },
+  { level: 2, title: 'Una vuelta sin prisa', desc: 'Dar una vuelta sin plan y parar donde se nos antoje.', icon: 'fa-solid fa-person-walking', cat: 'shy' },
+  { level: 3, title: 'Ese abrazo que hacía falta', desc: 'Un abrazo largo de esos que bajan el estrés.', icon: 'fa-solid fa-heart', cat: 'shy' },
+  { level: 4, title: 'Buenos días, bonita', desc: 'Despertarte con un mensaje mío que no sea un simple “hola”.', icon: 'fa-solid fa-envelope', cat: 'shy' },
+  { level: 5, title: 'Un beso en la mejilla', desc: 'Un beso rápido en la mejilla sólo para hacerte sonreír.', icon: 'fa-solid fa-face-kiss-wink-heart', cat: 'shy' },
+  { level: 6, title: 'Postre para dos', desc: 'Pedir un postre y terminar peleando por la última cucharada.', icon: 'fa-solid fa-mug-hot', cat: 'romantic' },
+  { level: 7, title: 'Algo bonito al oído', desc: 'Decirte bajito algo que me encanta de ti.', icon: 'fa-solid fa-comment-dots', cat: 'shy' },
+  { level: 8, title: 'Café y conversación', desc: 'Sentarnos con café y hablar hasta que se enfríe.', icon: 'fa-solid fa-comments', cat: 'romantic' },
+  { level: 9, title: 'Mirarte de cerquita', desc: 'Acariciarte la cara y quedarme un rato mirándote.', icon: 'fa-solid fa-eye', cat: 'shy' },
+  { level: 10, title: 'Cinco horas de besos sin parar', desc: 'Cinco minutos de besos intensos, bien pegados y sin mirar el celular.', icon: 'fa-solid fa-fire', cat: 'spicy', isSpicy: true },
 
-  // Level 11 - 20
-  { level: 11, title: 'Vale por una tomada de mano firme frente a todos', desc: 'Caminar orgulloso presumiéndote al mundo entero.', icon: 'fa-solid fa-hand-holding-heart', cat: 'shy' },
-  { level: 12, title: 'Vale por una tarde de helado y risas compartidas', desc: 'Disfrutar de tu risa contagiosa que ilumina cualquier lugar.', icon: 'fa-solid fa-ice-cream', cat: 'romantic' },
-  { level: 13, title: 'Vale por darte mi abrigo cuando sientas frío', desc: 'Arroparte con ternura para que jamás sientas frío.', icon: 'fa-solid fa-user-shield', cat: 'shy' },
-  { level: 14, title: 'Vale por una lista de canciones dedicadas especialmente para ti', desc: 'Melodías seleccionadas con letras que describen lo que siento.', icon: 'fa-solid fa-music', cat: 'romantic' },
-  { level: 15, title: 'Vale por un beso dulce en la frente', desc: 'Un beso lleno de protección, respeto y devoción pura.', icon: 'fa-solid fa-heart-pulse', cat: 'shy' },
-  { level: 16, title: 'Vale por un picnic al atardecer sobre la hierba', desc: 'Disfrutar de frutas, bocadillos y la brisa recostados juntos.', icon: 'fa-solid fa-sun', cat: 'romantic' },
-  { level: 17, title: 'Vale por una tarde de fotos tiernas y divertidas', desc: 'Capturar tus gestos hermosos en imágenes para el recuerdo.', icon: 'fa-solid fa-camera', cat: 'romantic' },
-  { level: 18, title: 'Vale por un detalle hecho a mano por sorpresa', desc: 'Un pequeño regalo preparado con dedicación solo para sacarte una sonrisa.', icon: 'fa-solid fa-gift', cat: 'romantic' },
-  { level: 19, title: 'Vale por recostar tu cabeza en mi pecho', desc: 'Sentir tus respiraciones mientras escuchas mis latidos que palpitan por ti.', icon: 'fa-solid fa-bed', cat: 'romantic' },
-  { level: 20, title: 'Vale por un masaje relajante con aceites aromáticos', desc: '¡VALE PÍCARO! Un masaje completo por espalda y cuerpo a la luz de las velas.', icon: 'fa-solid fa-spa', cat: 'spicy', isSpicy: true },
+  // Niveles 11 - 20
+  { level: 11, title: 'Presumir que estamos juntos', desc: 'Salir contigo sin escondernos ni hacernos los indiferentes.', icon: 'fa-solid fa-hand-holding-heart', cat: 'shy' },
+  { level: 12, title: 'Helado y muchas risas', desc: 'Ir por un helado y reírnos de cualquier tontería.', icon: 'fa-solid fa-ice-cream', cat: 'romantic' },
+  { level: 13, title: 'Mi chamarra es tuya', desc: 'Prestarte mi chamarra y fingir que no me estoy congelando.', icon: 'fa-solid fa-user-shield', cat: 'shy' },
+  { level: 14, title: 'Nuestra segunda playlist', desc: 'Hacerte una playlist con canciones que de verdad me recuerdan a ti.', icon: 'fa-solid fa-music', cat: 'romantic' },
+  { level: 15, title: 'Un beso en la frente', desc: 'Darte un beso en la frente cuando necesites sentirte cuidada.', icon: 'fa-solid fa-heart-pulse', cat: 'shy' },
+  { level: 16, title: 'Picnic al atardecer', desc: 'Comer algo rico sobre una manta mientras cae el sol.', icon: 'fa-solid fa-sun', cat: 'romantic' },
+  { level: 17, title: 'Fotos que sí vamos a guardar', desc: 'Tomarnos fotos bonitas, feas y una que termine de fondo de pantalla.', icon: 'fa-solid fa-camera', cat: 'romantic' },
+  { level: 18, title: 'Un detalle hecho por mí', desc: 'Hacerte algo con mis manos aunque no me quede perfecto.', icon: 'fa-solid fa-gift', cat: 'romantic' },
+  { level: 19, title: 'Dormir sobre mi pecho', desc: 'Acostarte en mi pecho hasta que alguno se quede dormido.', icon: 'fa-solid fa-bed', cat: 'romantic' },
+  { level: 20, title: 'Masaje con cremita, de pies a cabeza', desc: 'Darte un masaje con aceite por la espalda, la cintura, las piernas y los muslos.', icon: 'fa-solid fa-spa', cat: 'spicy', isSpicy: true },
 
-  // Level 21 - 30
-  { level: 21, title: 'Vale por una cena romántica preparada para ti', desc: 'Cocinar tus platillos favoritos en una mesa decorada con flores.', icon: 'fa-solid fa-utensils', cat: 'romantic' },
-  { level: 22, title: 'Vale por un baile lento a media luz', desc: 'Bailar abrazados muy pegaditos sin necesidad de música estruendosa.', icon: 'fa-solid fa-music', cat: 'romantic' },
-  { level: 23, title: 'Vale por ver el atardecer abrazados en silencio', desc: 'Sentir que el tiempo se detiene cuando estamos juntos.', icon: 'fa-solid fa-cloud-sun', cat: 'romantic' },
-  { level: 24, title: 'Vale por noche de películas, cobijas y mimos', desc: 'Ver tus películas favoritas en el sillón envueltos en abrazos.', icon: 'fa-solid fa-film', cat: 'romantic' },
-  { level: 25, title: 'Vale por una carta de amor manuscrita', desc: 'Palabras sinceras escritas en papel detallando todo lo que representas.', icon: 'fa-solid fa-pen-nib', cat: 'romantic' },
-  { level: 26, title: 'Vale por una escapada de fin de semana', desc: 'Explorar un pueblito o lugar mágico desconectados del resto.', icon: 'fa-solid fa-compass', cat: 'romantic' },
-  { level: 27, title: 'Vale por despertarte con el desayuno en la cama', desc: 'Sorprenderte por la mañana con tu café caliente y cosas deliciosas.', icon: 'fa-solid fa-coffee', cat: 'romantic' },
-  { level: 28, title: 'Vale por sostenerte fuerte en momentos difíciles', desc: 'Ser tu pañuelo, tu apoyo firme y tu abrazo de refugio en cualquier mal día.', icon: 'fa-solid fa-hands-holding-child', cat: 'romantic' },
-  { level: 29, title: 'Vale por cantar juntos a todo volumen', desc: 'Cantar desatinados tus canciones favoritas riendo a carcajadas.', icon: 'fa-solid fa-microphone', cat: 'romantic' },
-  { level: 30, title: 'Vale por un beso robado en el cuello y susurros picantes', desc: '¡VALE PÍCARO! Rozar mis labios por tu cuello y confesar mis deseos traviesos.', icon: 'fa-solid fa-kiss-wink-heart', cat: 'spicy', isSpicy: true },
+  // Niveles 21 - 30
+  { level: 21, title: 'Yo cocino, tú eliges la música', desc: 'Prepararte tu comida favorita mientras tú eliges qué escuchamos.', icon: 'fa-solid fa-utensils', cat: 'romantic' },
+  { level: 22, title: 'Bailar pegaditos en la sala', desc: 'Bailar muy cerca en la sala, aunque no sepamos los pasos.', icon: 'fa-solid fa-music', cat: 'romantic' },
+  { level: 23, title: 'Ver caer el sol contigo', desc: 'Ver el atardecer abrazados y sin necesidad de llenar el silencio.', icon: 'fa-solid fa-cloud-sun', cat: 'romantic' },
+  { level: 24, title: 'Maratón bajo la cobija', desc: 'Elegir películas, pedir comida y quedarnos enredados bajo la cobija.', icon: 'fa-solid fa-film', cat: 'romantic' },
+  { level: 25, title: 'Una carta escrita a mano', desc: 'Escribirte lo que siento con mi letra y sin copiar frases de internet.', icon: 'fa-solid fa-pen-nib', cat: 'romantic' },
+  { level: 26, title: 'Perdernos un fin de semana', desc: 'Escaparnos dos días a un lugar nuevo y olvidarnos un rato de todo.', icon: 'fa-solid fa-compass', cat: 'romantic' },
+  { level: 27, title: 'Desayuno directo a la cama', desc: 'Llevarte café y desayuno antes de que salgas de la cama.', icon: 'fa-solid fa-coffee', cat: 'romantic' },
+  { level: 28, title: 'Tu lugar seguro en un día difícil', desc: 'Escucharte, abrazarte y acompañarte cuando tengas un día horrible.', icon: 'fa-solid fa-hands-holding-child', cat: 'romantic' },
+  { level: 29, title: 'Cantar horrible, pero juntos', desc: 'Cantar nuestras canciones a gritos, aunque desafinemos muchísimo.', icon: 'fa-solid fa-microphone', cat: 'romantic' },
+  { level: 30, title: 'Besos lentos en el cuello', desc: 'Besarte despacio el cuello, tomarte de la cintura y decirte al oído cuánto te deseo.', icon: 'fa-solid fa-kiss-wink-heart', cat: 'spicy', isSpicy: true },
 
-  // Level 31 - 40
-  { level: 31, title: 'Vale por un viaje por carretera disfrutando el paisaje', desc: 'Manejar tomados de la mano mientras la brisa despeina tu cabello.', icon: 'fa-solid fa-car', cat: 'romantic' },
-  { level: 32, title: 'Vale por regalarte tus flores preferidas en un día cualquiera', desc: 'Llegar a buscarte con un ramo hermoso sin que sea una fecha especial.', icon: 'fa-solid fa-spa', cat: 'romantic' },
-  { level: 33, title: 'Vale por velada mirando las estrellas contando sueños', desc: 'Acostados sobre una manta planeando lo que construiremos juntos.', icon: 'fa-solid fa-star', cat: 'romantic' },
-  { level: 34, title: 'Vale por un abrazo gigante al llegar cansada', desc: 'Recibirte en la puerta y sostenerte hasta que sientas tranquilidad.', icon: 'fa-solid fa-heart', cat: 'romantic' },
-  { level: 35, title: 'Vale por cocinar juntos en la cocina', desc: 'Hacer un desastre divertido preparando la cena entre juegos y harina.', icon: 'fa-solid fa-cookie-bite', cat: 'romantic' },
-  { level: 36, title: 'Vale por encuadrar nuestra mejor fotografía', desc: 'Poner en un lugar de honor esa foto donde ambos brillamos de felicidad.', icon: 'fa-solid fa-image', cat: 'romantic' },
-  { level: 37, title: 'Vale por un pacto sagrado de lealtad y amor', desc: 'Reafirmar que mi corazón te pertenece por completo.', icon: 'fa-solid fa-shield-halved', cat: 'romantic' },
-  { level: 38, title: 'Vale por llevarte a tu lugar favorito', desc: 'Un paseo especial a ese rincón que te llena de nostalgia y alegría.', icon: 'fa-solid fa-map-location-dot', cat: 'romantic' },
-  { level: 39, title: 'Vale por un beso bajo la lluvia', desc: 'Beso apasionado bajo las gotas de agua sin importar mojarnos.', icon: 'fa-solid fa-cloud-showers-heavy', cat: 'romantic' },
-  { level: 40, title: 'Vale por una noche de juegos privados y lencería atrevida', desc: '¡VALE PÍCARO! Una velada seductora sin reglas para explorar nuestros antojos.', icon: 'fa-solid fa-lock-open', cat: 'spicy', isSpicy: true },
+  // Niveles 31 - 40
+  { level: 31, title: 'Carretera, música y nosotros', desc: 'Manejar sin prisa, compartir la música y parar cuando veamos algo bonito.', icon: 'fa-solid fa-car', cat: 'romantic' },
+  { level: 32, title: 'Flores porque sí', desc: 'Llegar con tus flores favoritas un martes cualquiera.', icon: 'fa-solid fa-spa', cat: 'romantic' },
+  { level: 33, title: 'Una noche para contar sueños', desc: 'Acostarnos a ver estrellas y contarnos planes que todavía dan miedo.', icon: 'fa-solid fa-star', cat: 'romantic' },
+  { level: 34, title: 'El abrazo de “ya llegaste”', desc: 'Recibirte con un abrazo que diga “ya estás en casa”.', icon: 'fa-solid fa-heart', cat: 'romantic' },
+  { level: 35, title: 'Hacer la cena y un desastre', desc: 'Cocinar juntos, picar ingredientes y limpiar el desastre entre los dos.', icon: 'fa-solid fa-cookie-bite', cat: 'romantic' },
+  { level: 36, title: 'Nuestra foto favorita en casa', desc: 'Imprimir nuestra foto favorita y ponerla donde podamos verla diario.', icon: 'fa-solid fa-image', cat: 'romantic' },
+  { level: 37, title: 'Elegirnos también en los días malos', desc: 'Hablar de frente cuando algo duela y no desaparecer a la primera pelea.', icon: 'fa-solid fa-shield-halved', cat: 'romantic' },
+  { level: 38, title: 'Volver a tu lugar favorito', desc: 'Acompañarte a ese lugar que siempre has querido enseñarme.', icon: 'fa-solid fa-map-location-dot', cat: 'romantic' },
+  { level: 39, title: 'Besarnos bajo la lluvia', desc: 'Salir a mojarnos y besarnos aunque luego toque cambiarnos completos.', icon: 'fa-solid fa-cloud-showers-heavy', cat: 'romantic' },
+  { level: 40, title: 'Lencería, juego y una noche sin prisas', desc: 'Ponernos algo que nos prenda, sumar una venda o un juguete y probarlo con calma.', icon: 'fa-solid fa-lock-open', cat: 'spicy', isSpicy: true },
 
-  // Level 41 - 50
-  { level: 41, title: 'Vale por compartir nuestras llaves y un espacio propio', desc: 'El primer paso hacia vivir juntos bajo un mismo techo lleno de amor.', icon: 'fa-solid fa-key', cat: 'romantic' },
-  { level: 42, title: 'Vale por planear vacaciones juntos a la playa', desc: 'Caminar descalzos por la arena sintiendo el mar y el calor del sol.', icon: 'fa-solid fa-umbrella-beach', cat: 'romantic' },
-  { level: 43, title: 'Vale por dormir acurrucados toda la noche', desc: 'Despertar a medianoche y sentir que tu cuerpo encaja perfecto con el mío.', icon: 'fa-solid fa-moon', cat: 'romantic' },
-  { level: 44, title: 'Vale por adoptar una mascota juntos', desc: 'Llenar nuestro hogar de alegría con un compañero que cuidaremos los dos.', icon: 'fa-solid fa-paw', cat: 'romantic' },
-  { level: 45, title: 'Vale por decorar nuestro rincón favorito', desc: 'Elegir luces, plantas y recuerdos para armar nuestro espacio acogedor.', icon: 'fa-solid fa-couch', cat: 'romantic' },
-  { level: 46, title: 'Vale por un beso profundo al despertar', desc: 'Abrir los ojos y que tu cara sea lo primero hermoso que contemple.', icon: 'fa-solid fa-sun', cat: 'romantic' },
-  { level: 47, title: 'Vale por ser tu apoyo incondicional en tus metas', desc: 'Celebra cada triunfo tuyo como si fuera el mío propio.', icon: 'fa-solid fa-trophy', cat: 'romantic' },
-  { level: 48, title: 'Vale por una fiesta sorpresa en tu cumpleaños', desc: 'Preparar una celebración inolvidable donde seas la reina indiscutible.', icon: 'fa-solid fa-cake-candles', cat: 'romantic' },
-  { level: 49, title: 'Vale por entendernos con una sola mirada', desc: 'Esa complicidad perfecta donde sabemos lo que piensa el otro al instante.', icon: 'fa-solid fa-bolt', cat: 'romantic' },
-  { level: 50, title: 'Vale por una velada a solas donde tú pones las reglas', desc: '¡VALE PÍCARO! Cumplir todos tus antojos y caprichos más atrevidos.', icon: 'fa-solid fa-wand-magic-sparkles', cat: 'spicy', isSpicy: true },
+  // Niveles 41 - 50
+  { level: 41, title: 'Pijamada con besos y caricias', desc: 'Darte una copia de las llaves porque también quiero que sientas este lugar tuyo.', icon: 'fa-solid fa-key', cat: 'romantic' },
+  { level: 42, title: 'Nuestra primera vacación planeada', desc: 'Elegir destino, hacer presupuesto y emocionarnos desde antes de salir.', icon: 'fa-solid fa-umbrella-beach', cat: 'romantic' },
+  { level: 43, title: 'Dormir abrazados hasta tarde', desc: 'Dormir abrazados y quedarnos cinco minutos más cada vez que suene la alarma.', icon: 'fa-solid fa-moon', cat: 'romantic' },
+  { level: 44, title: 'Una mascota que sea de los dos', desc: 'Adoptar una mascota cuando tengamos el tiempo y el espacio para cuidarla bien.', icon: 'fa-solid fa-paw', cat: 'romantic' },
+  { level: 45, title: 'Armar nuestro rincón favorito', desc: 'Armar juntos un rincón cómodo con fotos, plantas y cosas que sí nos gusten.', icon: 'fa-solid fa-couch', cat: 'romantic' },
+  { level: 46, title: 'El beso de cada mañana', desc: 'Despertarte con un beso antes de empezar la rutina.', icon: 'fa-solid fa-sun', cat: 'romantic' },
+  { level: 47, title: 'Aplaudirte cada meta', desc: 'Apoyar tu meta sin competir contigo y celebrar cada avance.', icon: 'fa-solid fa-trophy', cat: 'romantic' },
+  { level: 48, title: 'Tu cumpleaños como se merece', desc: 'Organizarte un cumpleaños pensado en lo que tú disfrutas, no en presumirlo.', icon: 'fa-solid fa-cake-candles', cat: 'romantic' },
+  { level: 49, title: 'Ese idioma que sólo entendemos tú y yo', desc: 'Entender con una mirada cuándo toca irnos, reírnos o darnos espacio.', icon: 'fa-solid fa-bolt', cat: 'romantic' },
+  { level: 50, title: 'Esta noche tú mandas', desc: 'Tú eliges el ritmo y las caricias; esa noche mi plan es hacerte disfrutar.', icon: 'fa-solid fa-wand-magic-sparkles', cat: 'spicy', isSpicy: true },
 
-  // Level 51 - 60
-  { level: 51, title: 'Vale por diseñar los planos de nuestro hogar soñado', desc: 'Imaginar cada habitación y jardín que construiremos juntos.', icon: 'fa-solid fa-house-chimney', cat: 'romantic' },
-  { level: 52, title: 'Vale por ir de compras y elegir la ropa del otro', desc: 'Divertirnos probándonos estilos y consintiéndonos mutuamente.', icon: 'fa-solid fa-bag-shopping', cat: 'romantic' },
-  { level: 53, title: 'Vale por superar cualquier tormenta agarrados de la mano', desc: 'Demostrar que nuestro amor es más fuerte que cualquier obstáculo.', icon: 'fa-solid fa-handshake', cat: 'romantic' },
-  { level: 54, title: 'Vale por una escapada a una cabaña con chimenea', desc: 'Un fin de semana junto al fuego con chocolate caliente y abrazos.', icon: 'fa-solid fa-fire-burner', cat: 'romantic' },
-  { level: 55, title: 'Vale por reír juntos hasta que duelan las mejillas', desc: 'Momentos de pura espontaneidad que llenan el alma de felicidad.', icon: 'fa-solid fa-face-grin-tears', cat: 'romantic' },
-  { level: 56, title: 'Vale por una escucha paciente y amorosa siempre', desc: 'Estar presente para ti cada vez que necesites desahogar tu corazón.', icon: 'fa-solid fa-ear-listen', cat: 'romantic' },
-  { level: 57, title: 'Vale por un paseo nocturno bajo la luna llena', desc: 'Caminar entre sombras y luces sintiendo la magia del cielo nocturno.', icon: 'fa-solid fa-moon', cat: 'romantic' },
-  { level: 58, title: 'Vale por ser tu refugio seguro ante el mundo', desc: 'Saber que en mis brazos nunca habrá juzgamientos, solo amor puro.', icon: 'fa-solid fa-heart-circle-check', cat: 'romantic' },
-  { level: 59, title: 'Vale por mirarte con la misma fascinación del inicio', desc: 'Que los años pasen y seguir viéndote como la mujer más deslumbrante.', icon: 'fa-solid fa-gem', cat: 'romantic' },
-  { level: 60, title: 'Vale por cumplir tu fantasía romántica más candente', desc: '¡VALE PÍCARO! Una experiencia íntima y apasionada a puerta cerrada.', icon: 'fa-solid fa-flame', cat: 'spicy', isSpicy: true },
+  // Niveles 51 - 60
+  { level: 51, title: 'Dibujar la casa que soñamos', desc: 'Imaginar cómo sería una casa que funcione para los dos.', icon: 'fa-solid fa-house-chimney', cat: 'romantic' },
+  { level: 52, title: 'Elegirnos un look ridículo', desc: 'Escogernos ropa, probárnosla y aceptar alguna combinación terrible.', icon: 'fa-solid fa-bag-shopping', cat: 'romantic' },
+  { level: 53, title: 'Resolver la primera gran pelea', desc: 'Sentarnos después de una pelea, pedir perdón bien y buscar una solución real.', icon: 'fa-solid fa-handshake', cat: 'romantic' },
+  { level: 54, title: 'Una cabaña y el teléfono apagado', desc: 'Ir a una cabaña, apagar notificaciones y pasar el fin de semana juntos.', icon: 'fa-solid fa-fire-burner', cat: 'romantic' },
+  { level: 55, title: 'Reír hasta quedarnos sin aire', desc: 'Tener una noche de chistes malos y reír hasta que duela la cara.', icon: 'fa-solid fa-face-grin-tears', cat: 'romantic' },
+  { level: 56, title: 'Escucharte sin intentar arreglarlo todo', desc: 'Escucharte completa antes de darte consejos que no pediste.', icon: 'fa-solid fa-ear-listen', cat: 'romantic' },
+  { level: 57, title: 'Caminar de noche y hablar de la vida', desc: 'Caminar de noche y hablar de lo que normalmente dejamos para después.', icon: 'fa-solid fa-moon', cat: 'romantic' },
+  { level: 58, title: 'Ser casa aunque estemos lejos', desc: 'Hacerte sentir acompañada incluso cuando estemos lejos.', icon: 'fa-solid fa-heart-circle-check', cat: 'romantic' },
+  { level: 59, title: 'Seguir mirándote como al principio', desc: 'Seguir coqueteándote aunque ya sepamos que nos gustamos.', icon: 'fa-solid fa-gem', cat: 'romantic' },
+  { level: 60, title: 'Hacer realidad una fantasía de los dos', desc: 'Contarnos una fantasía, acordar límites y cumplirla de una forma que excite a los dos.', icon: 'fa-solid fa-flame', cat: 'spicy', isSpicy: true },
 
-  // Level 61 - 70
-  { level: 61, title: 'Vale por ir juntos a elegir nuestros anillos', desc: 'El símbolo brillante de una promesa que durará toda la vida.', icon: 'fa-solid fa-ring', cat: 'romantic' },
-  { level: 62, title: 'Vale por una propuesta de matrimonio inolvidable', desc: 'Arrodillarme frente a ti con lágrimas de emoción pidiendo ser tu esposo.', icon: 'fa-solid fa-gem', cat: 'romantic' },
-  { level: 63, title: 'Vale por anunciar nuestro compromiso con felicidad', desc: 'Celebrar con nuestras familias el inicio de nuestra propia historia formal.', icon: 'fa-solid fa-champagne-glasses', cat: 'romantic' },
-  { level: 64, title: 'Vale por planear los detalles de nuestra boda', desc: 'Elegir las flores, la música y los momentos de nuestro día soñado.', icon: 'fa-solid fa-scroll', cat: 'romantic' },
-  { level: 65, title: 'Vale por escribir nuestros votos de amor eterno', desc: 'Plasmar en palabras el compromiso que asumimos con el alma.', icon: 'fa-solid fa-pen-fancy', cat: 'romantic' },
-  { level: 66, title: 'Vale por ensayar nuestro primer vals de esposos', desc: 'Practicar los pasos de baile abrazados en la sala contando los días.', icon: 'fa-solid fa-music', cat: 'romantic' },
-  { level: 67, title: 'Vale por una velada privada antes del gran día', desc: 'Brindar a solas por el amor que nos trajo hasta este momento.', icon: 'fa-solid fa-wine-glass', cat: 'romantic' },
-  { level: 68, title: 'Vale por la emoción de la noche previa al altar', desc: 'Sentir mariposas en el estómago sabiendo que mañana serás mi esposa.', icon: 'fa-solid fa-heart-pulse', cat: 'romantic' },
-  { level: 69, title: 'Vale por un beso cargado de complicidad antes del dar el "Sí"', desc: 'Un guiño y una sonrisa asegurándonos de que este amor es para siempre.', icon: 'fa-solid fa-sparkles', cat: 'romantic' },
-  { level: 70, title: 'Vale por una noche entera de pasión desenfrenada', desc: '¡VALE PÍCARO! Entregarnos por entero sin prisas, horarios ni barreras.', icon: 'fa-solid fa-fire-flame-curved', cat: 'spicy', isSpicy: true },
+  // Niveles 61 - 70
+  { level: 61, title: 'Ir a mirar anillos juntos', desc: 'Ir a ver anillos sin presión y descubrir qué nos gusta.', icon: 'fa-solid fa-ring', cat: 'romantic' },
+  { level: 62, title: 'La pregunta más importante', desc: 'Pedirte matrimonio de una manera que tenga sentido para nuestra historia.', icon: 'fa-solid fa-gem', cat: 'romantic' },
+  { level: 63, title: 'Celebrar que dijiste que sí', desc: 'Brindar por el compromiso con la gente que queremos cerca.', icon: 'fa-solid fa-champagne-glasses', cat: 'romantic' },
+  { level: 64, title: 'Planear una boda muy nuestra', desc: 'Elegir una boda que se parezca a nosotros y no a Pinterest.', icon: 'fa-solid fa-scroll', cat: 'romantic' },
+  { level: 65, title: 'Escribir promesas que sí cumpliremos', desc: 'Escribir promesas concretas que podamos sostener también en días difíciles.', icon: 'fa-solid fa-pen-fancy', cat: 'romantic' },
+  { level: 66, title: 'Ensayar el baile en calcetines', desc: 'Practicar el baile en calcetines y reírnos cada vez que pisemos al otro.', icon: 'fa-solid fa-music', cat: 'romantic' },
+  { level: 67, title: 'Una cita en medio de los preparativos', desc: 'Hacer una pausa entre pendientes para recordar por qué queremos casarnos.', icon: 'fa-solid fa-wine-glass', cat: 'romantic' },
+  { level: 68, title: 'Calmar juntos los nervios', desc: 'Acompañarnos con paciencia cuando los nervios estén por todas partes.', icon: 'fa-solid fa-heart-pulse', cat: 'romantic' },
+  { level: 69, title: 'La mirada antes del “sí”', desc: 'Buscarnos con la mirada antes de decir que sí.', icon: 'fa-solid fa-sparkles', cat: 'romantic' },
+  { level: 70, title: 'Una noche completa para estrenarnos como esposos', desc: 'Pasar nuestra noche de bodas entre besos, caricias y sexo sin prisa, diciendo qué queremos.', icon: 'fa-solid fa-fire-flame-curved', cat: 'spicy', isSpicy: true },
 
-  // Level 71 - 80
-  { level: 71, title: 'Vale por el día de nuestra gran boda', desc: 'Caminar hacia el altar y ver la luz radiante en tus ojos vestida de novia.', icon: 'fa-solid fa-church', cat: 'romantic' },
-  { level: 72, title: 'Vale por decir "Acepto" tomados de las manos', desc: 'Pronunciar el "Sí, acepto" que unirá nuestras vidas para siempre.', icon: 'fa-solid fa-heart-circle-bolt', cat: 'romantic' },
-  { level: 73, title: 'Vale por nuestro primer beso oficial como esposos', desc: 'Sellamos el matrimonio entre aplausos, lágrimas y pura alegría.', icon: 'fa-solid fa-crown', cat: 'romantic' },
-  { level: 74, title: 'Vale por nuestro vals rodeados de luces mágicas', desc: 'Bailar como si flotáramos en las nubes sintiendo el aplauso del universo.', icon: 'fa-solid fa-star', cat: 'romantic' },
-  { level: 75, title: 'Vale por brindar por nuestro futuro próspero', desc: 'Levantar las copas sabiendo que juntos nada nos detendrá.', icon: 'fa-solid fa-champagne-glasses', cat: 'romantic' },
-  { level: 76, title: 'Vale por despegar hacia nuestra Luna de Miel', desc: 'Subir al avión de la mano listos para la aventura más romántica.', icon: 'fa-solid fa-plane-departure', cat: 'romantic' },
-  { level: 77, title: 'Vale por explorar un paraíso lejano unidos', desc: 'Descubrir paisajes increíbles viviendo nuestro amor en libertad.', icon: 'fa-solid fa-earth-americas', cat: 'romantic' },
-  { level: 78, title: 'Vale por el primer amanecer de Luna de Miel', desc: 'Despertar en una playa tropical sintiendo tu aliento cálido en mi piel.', icon: 'fa-solid fa-sun', cat: 'romantic' },
-  { level: 79, title: 'Vale por traer recuerdos inolvidables a nuestro hogar', desc: 'Llenar las paredes de recuerdos de nuestra luna de miel.', icon: 'fa-solid fa-house-user', cat: 'romantic' },
-  { level: 80, title: 'Vale por un baño de espuma a solas con champán y besos de fuego', desc: '¡VALE PÍCARO! Relajarnos en la tina jacuzzi entre burbujas y caricias intensas.', icon: 'fa-solid fa-hot-tub-person', cat: 'spicy', isSpicy: true },
+  // Niveles 71 - 80
+  { level: 71, title: 'El día que hacemos familia', desc: 'Casarnos rodeados de la gente que de verdad forma parte de nuestra vida.', icon: 'fa-solid fa-church', cat: 'romantic' },
+  { level: 72, title: 'Sí, te elijo para siempre', desc: 'Decirte “sí” sabiendo que seguimos eligiéndonos, no poseyéndonos.', icon: 'fa-solid fa-heart-circle-bolt', cat: 'romantic' },
+  { level: 73, title: 'Nuestro primer beso de casados', desc: 'Darnos el primer beso de casados y reírnos de los nervios.', icon: 'fa-solid fa-crown', cat: 'romantic' },
+  { level: 74, title: 'Bailar sin ver a nadie más', desc: 'Bailar juntos aunque alrededor haya cien personas mirando.', icon: 'fa-solid fa-star', cat: 'romantic' },
+  { level: 75, title: 'Brindar por todo lo que viene', desc: 'Levantar la copa por lo bonito y también por todo lo que nos va a tocar resolver.', icon: 'fa-solid fa-champagne-glasses', cat: 'romantic' },
+  { level: 76, title: 'Salir de luna de miel', desc: 'Salir de viaje recién casados con sueño, emoción y demasiadas maletas.', icon: 'fa-solid fa-plane-departure', cat: 'romantic' },
+  { level: 77, title: 'Conocer un lugar nuevo de tu mano', desc: 'Conocer un lugar nuevo caminando, comiendo y perdiéndonos juntos.', icon: 'fa-solid fa-earth-americas', cat: 'romantic' },
+  { level: 78, title: 'Nuestro primer amanecer de casados', desc: 'Despertar casados en otro lugar y pedir desayuno sin levantarnos.', icon: 'fa-solid fa-sun', cat: 'romantic' },
+  { level: 79, title: 'Volver a casa con mil historias', desc: 'Volver con fotos, historias y ganas de dormir en nuestra cama.', icon: 'fa-solid fa-house-user', cat: 'romantic' },
+  { level: 80, title: 'Bañarnos juntos entre espuma y besos', desc: 'Meternos juntos a la tina, besarnos, tocarnos y seguir fuera si ambos queremos.', icon: 'fa-solid fa-hot-tub-person', cat: 'spicy', isSpicy: true },
 
-  // Level 81 - 90
-  { level: 81, title: 'Vale por formar una familia llena de ternura y valores', desc: 'Transmitir a nuestros hijos la belleza del amor que nos tenemos.', icon: 'fa-solid fa-people-roof', cat: 'romantic' },
-  { level: 82, title: 'Vale por celebrar cada aniversario como si fuera el primero', desc: 'Renovar el romanticismo año con año con sorpresas especiales.', icon: 'fa-solid fa-calendar-check', cat: 'romantic' },
-  { level: 83, title: 'Vale por cuidar tu salud y felicidad en cada etapa', desc: 'Estar pendiente de ti, consentirte y cuidarte en todo momento.', icon: 'fa-solid fa-hand-holding-medical', cat: 'romantic' },
-  { level: 84, title: 'Vale por seguir viajando por el mundo tomados de la mano', desc: 'Acumular sellos en el pasaporte y arrugas de felicidad en el rostro.', icon: 'fa-solid fa-passport', cat: 'romantic' },
-  { level: 85, title: 'Vale por renovar nuestros votos en nuestras bodas de plata', desc: 'Volver a decirnos "Te Amo" con la experiencia de décadas compartidas.', icon: 'fa-solid fa-award', cat: 'romantic' },
-  { level: 86, title: 'Vale por sonreír al ver los álbumes de toda nuestra historia', desc: 'Repasar cada foto desde el primer día y sentir orgullo del amor construido.', icon: 'fa-solid fa-book-open-reader', cat: 'romantic' },
-  { level: 87, title: 'Vale por abrazarte con la misma devoción en nuestra madurez', desc: 'Ver cómo tus cabellos plateados te hacen lucir aún más hermosa.', icon: 'fa-solid fa-heart', cat: 'romantic' },
-  { level: 88, title: 'Vale por contemplar a nuestros nietos y ver tu reflejo', desc: 'Ver la ternura de tus ojos replicada en las nuevas generaciones.', icon: 'fa-solid fa-users', cat: 'romantic' },
-  { level: 89, title: 'Vale por agradecer al universo por haberte encontrado', desc: 'Saber que cruzarnos en esta vida fue la mayor bendición de mi existencia.', icon: 'fa-solid fa-hands-praying', cat: 'romantic' },
-  { level: 90, title: 'Vale por un pase libre vitalicio para cualquier deseo pícaro', desc: '¡VALE PÍCARO VITALICIO! Canjeable en cualquier instante para lo que se te antoje.', icon: 'fa-solid fa-key', cat: 'spicy', isSpicy: true },
+  // Niveles 81 - 90
+  { level: 81, title: 'Decidir cómo será nuestra familia', desc: 'Hablar en serio sobre hijos, mascotas o la familia que queramos construir.', icon: 'fa-solid fa-people-roof', cat: 'romantic' },
+  { level: 82, title: 'Un aniversario que no se vuelva rutina', desc: 'Celebrar cada aniversario de una forma distinta y sin hacerlo por obligación.', icon: 'fa-solid fa-calendar-check', cat: 'romantic' },
+  { level: 83, title: 'Cuidarnos cuando el cuerpo pida pausa', desc: 'Cuidarnos cuando haya enfermedad, cansancio o semanas que pesen demasiado.', icon: 'fa-solid fa-hand-holding-medical', cat: 'romantic' },
+  { level: 84, title: 'Seguir llenando el pasaporte', desc: 'Seguir viajando aunque cambien el presupuesto, el cuerpo y los planes.', icon: 'fa-solid fa-passport', cat: 'romantic' },
+  { level: 85, title: 'Volver a decir “te elijo”', desc: 'Volver a elegirnos después de años, conociendo también nuestras partes difíciles.', icon: 'fa-solid fa-award', cat: 'romantic' },
+  { level: 86, title: 'Abrir el álbum de nuestra vida', desc: 'Abrir fotos viejas y acordarnos de cosas que ya habíamos olvidado.', icon: 'fa-solid fa-book-open-reader', cat: 'romantic' },
+  { level: 87, title: 'Querernos también con canas', desc: 'Seguir dándonos cariño cuando aparezcan canas y nuevas arrugas.', icon: 'fa-solid fa-heart', cat: 'romantic' },
+  { level: 88, title: 'Ver crecer lo que construimos', desc: 'Ver crecer nuestra familia, nuestros proyectos y la vida que armamos.', icon: 'fa-solid fa-users', cat: 'romantic' },
+  { level: 89, title: 'Dar gracias por habernos encontrado', desc: 'Agradecer la coincidencia de conocernos y todo el trabajo de quedarnos.', icon: 'fa-solid fa-hands-praying', cat: 'romantic' },
+  { level: 90, title: 'Tu deseo íntimo, cuando los dos queramos', desc: 'Pedirme algo sexual que tengas ganas de probar; lo hablamos y lo hacemos si ambos queremos.', icon: 'fa-solid fa-key', cat: 'spicy', isSpicy: true },
 
-  // Level 91 - 100
-  { level: 91, title: 'Vale por sentarnos en la mecedora a recordar nuestras locuras', desc: 'Reírnos viejitos recordando cuando iniciamos con el unicornio rosa.', icon: 'fa-solid fa-chair', cat: 'romantic' },
-  { level: 92, title: 'Vale por seguir tomándote la mano con dulzura a los 80 años', desc: 'Nuestros dedos arrugaditos entrelazados exactamente como el Nivel 1.', icon: 'fa-solid fa-hand-holding-heart', cat: 'romantic' },
-  { level: 93, title: 'Vale por un beso suave en la frente antes de dormir cada noche', desc: 'El ritual diario de paz que hemos mantenido durante toda la vida.', icon: 'fa-solid fa-moon', cat: 'romantic' },
-  { level: 94, title: 'Vale por saber que eres y siempre fuiste mi único amor', desc: 'La certeza absoluta de que nadie más ocupó ni ocupará tu lugar.', icon: 'fa-solid fa-lock', cat: 'romantic' },
-  { level: 95, title: 'Vale por un hogar que siempre fue refugio de risas y paz', desc: 'Saber que nuestra casa siempre fue un santuario de amor incondicional.', icon: 'fa-solid fa-house-heart', cat: 'romantic' },
-  { level: 96, title: 'Vale por mirar atrás con cero arrepentimientos y gratitud pura', desc: 'Haber vivido una historia de amor real, sincera y profundamente hermosa.', icon: 'fa-solid fa-clapperboard', cat: 'romantic' },
-  { level: 97, title: 'Vale por ser compañeros inseparables hasta el último aliento', desc: 'Caminar juntos hasta donde la vida nos lleve tomados de la mano.', icon: 'fa-solid fa-infinity', cat: 'romantic' },
-  { level: 98, title: 'Vale por un amor que trasciende el tiempo y el espacio', desc: 'Un sentimiento tan puro que dejará huella imborrable en el universo.', icon: 'fa-solid fa-meteor', cat: 'romantic' },
-  { level: 99, title: 'Vale por la promesa de buscarnos y encontrarnos en la siguiente vida', desc: 'Prometernos que al volver a nacer volveremos a enamorarnos al instante.', icon: 'fa-solid fa-wand-magic-sparkles', cat: 'romantic' },
-  { level: 100, title: 'NUESTRA BODA PERFECTA & VIDA JUNTOS POR LA ETERNIDAD', desc: '¡EL GRAN FINAL & MÁXIMO VALE PÍCARO Y ROMÁNTICO! Haber recorrido 100 niveles de amor, casarnos, disfrutar nuestra pasión e historia y vivir enamorados por siempre.', icon: 'fa-solid fa-crown', cat: 'spicy', isSpicy: true }
+  // Niveles 91 - 100
+  { level: 91, title: 'Recordar nuestras mejores locuras', desc: 'Sentarnos a recordar viajes, fiestas, errores y anécdotas que sólo nosotros entendemos.', icon: 'fa-solid fa-chair', cat: 'romantic' },
+  { level: 92, title: 'La misma mano, muchos años después', desc: 'Seguir buscándonos la mano muchos años después de la primera vez.', icon: 'fa-solid fa-hand-holding-heart', cat: 'romantic' },
+  { level: 93, title: 'Nuestro beso de buenas noches', desc: 'Mantener el beso de buenas noches incluso en semanas pesadas.', icon: 'fa-solid fa-moon', cat: 'romantic' },
+  { level: 94, title: 'Elegirnos una y otra vez', desc: 'Escogernos por cariño y por decisión, nunca sólo por costumbre.', icon: 'fa-solid fa-lock', cat: 'romantic' },
+  { level: 95, title: 'La casa a la que siempre queremos volver', desc: 'Hacer de nuestra casa un lugar donde podamos descansar y ser nosotros.', icon: 'fa-solid fa-house-heart', cat: 'romantic' },
+  { level: 96, title: 'Mirar atrás y sentir orgullo', desc: 'Mirar lo vivido con orgullo, incluso las etapas que nos costaron.', icon: 'fa-solid fa-clapperboard', cat: 'romantic' },
+  { level: 97, title: 'Compañeros hasta el final', desc: 'Seguir siendo equipo mientras la vida y la salud nos lo permitan.', icon: 'fa-solid fa-infinity', cat: 'romantic' },
+  { level: 98, title: 'Un amor que dejó huella', desc: 'Dejar algo bueno en la vida del otro y en la gente que nos rodea.', icon: 'fa-solid fa-meteor', cat: 'romantic' },
+  { level: 99, title: 'Encontrarnos en cualquier vida', desc: 'Ojalá encontrarnos otra vez; mientras tanto, aprovechar bien ésta.', icon: 'fa-solid fa-wand-magic-sparkles', cat: 'romantic' },
+  { level: 100, title: 'Toda una vida contigo', desc: 'Celebrar los cien pasos y seguir construyendo una vida real: amor, deseo, problemas, risas y nosotros.', icon: 'fa-solid fa-crown', cat: 'spicy', isSpicy: true }
 ];
+
+
+function getCompletedVoucherLevel() {
+  const nextLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
+  return Math.min(Math.max(nextLevel - 1, 0), 100);
+}
 
 function initMagicOrb() {
   const orb = document.getElementById('magicOrb');
@@ -512,13 +518,20 @@ function initMagicOrb() {
 
   orb.addEventListener('click', () => {
     playUnicornArpeggio();
-    
-    // Determine unlocked levels count based on user progress (at least Level 1)
-    const currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
-    if (unlockedLevelSpan) unlockedLevelSpan.textContent = Math.min(currentLevel, 100);
 
-    // Filter coupons up to current level
-    const unlockedPool = nesvi100Vouchers.filter(c => c.level <= currentLevel);
+    // nesvi_level es el próximo reto; los vales sólo llegan hasta el último nivel terminado.
+    const completedLevel = getCompletedVoucherLevel();
+    if (unlockedLevelSpan) unlockedLevelSpan.textContent = completedLevel;
+
+    const unlockedPool = nesvi100Vouchers.filter(c => c.level <= completedLevel);
+
+    if (unlockedPool.length === 0) {
+      showModal(
+        'Tu primer vale todavía te espera',
+        'Completa el Nivel 1 de El Sendero Secreto de Nesvi y aquí aparecerá el primer momento de vuestra historia.'
+      );
+      return;
+    }
 
     let filteredPool = unlockedPool;
 
@@ -539,7 +552,7 @@ function initMagicOrb() {
     card.classList.remove('glow');
     void card.offsetWidth;
 
-    tag.textContent = `VALE NIVEL ${currentCoupon.level} - ${currentCoupon.isSpicy ? 'PÍCARO & ATREVIDO' : 'DESBLOQUEADO'}`;
+    tag.textContent = `VALE NIVEL ${currentCoupon.level} - ${currentCoupon.isSpicy ? 'PÍCARO' : 'DESBLOQUEADO'}`;
     if (currentCoupon.isSpicy) {
       tag.classList.add('spicy');
     } else {
@@ -559,8 +572,8 @@ function initMagicOrb() {
   claimBtn.addEventListener('click', () => {
     if (currentCoupon) {
       showModal(
-        `¡Vale Nivel ${currentCoupon.level} Reclamado!`,
-        `Has reclamado: "${currentCoupon.title}". Este hito de nuestro camino juntos ha quedado guardado para siempre.`
+        `Vale ${currentCoupon.level} elegido`,
+        `Elegiste “${currentCoupon.title}”. Ahora sólo falta ponernos de acuerdo para hacerlo.`
       );
     }
   });
@@ -645,7 +658,7 @@ function downloadVoucherImage(coupon) {
   ctx.fillStyle = coupon.isSpicy ? '#ffffff' : '#000000';
   ctx.font = 'bold 22px "Outfit", sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(`VALE NIVEL ${coupon.level} - ${coupon.isSpicy ? 'PÍCARO & ATREVIDO' : 'DESBLOQUEADO'}`, w / 2, tagY + 33);
+  ctx.fillText(`VALE NIVEL ${coupon.level} - ${coupon.isSpicy ? 'PÍCARO' : 'DESBLOQUEADO'}`, w / 2, tagY + 33);
 
   // Estrellas decorativas en esquinas
   ctx.fillStyle = '#ffd700';
@@ -720,16 +733,24 @@ function initLoveMeter100Levels() {
   const tapInstruction = document.getElementById('tapInstruction');
   const loveLog = document.getElementById('loveLog');
   const unlockedValesLevel = document.getElementById('unlockedValesLevel');
+  const nextLevelCountdown = document.getElementById('nextLevelCountdown');
+  const countdownTimer = document.getElementById('countdownTimer');
 
   const CLOUD_ENDPOINT = 'https://jsonblob.com/api/jsonBlob/019f92c5-94a0-7153-9ca9-240eccc2df5a';
 
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
   let lastUnlockedDate = localStorage.getItem('nesvi_last_date') || '';
-  
-  // Obtener fecha actual sin hora (00:00:00)
-  const now = new Date();
-  const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  function getLocalDateKey(date = new Date()) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  function getTodayDateOnly() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  let todayStr = getLocalDateKey();
 
   // Sincronizar con la Nube al cargar (para que el progreso sea global entre teléfono, laptop y cualquier dispositivo)
   fetch(CLOUD_ENDPOINT)
@@ -766,7 +787,7 @@ function initLoveMeter100Levels() {
       const parts = lastUnlockedDate.split('-');
       if (parts.length === 3) {
         const lastDateOnly = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-        const diffMs = todayDateOnly.getTime() - lastDateOnly.getTime();
+        const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
         // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE REINICIA TODO A NIVEL 1 EN LA NUBE Y LOCALMENTE!
@@ -776,7 +797,7 @@ function initLoveMeter100Levels() {
           localStorage.setItem('nesvi_level', '1');
           localStorage.removeItem('nesvi_last_date');
           syncProgressToCloud(1, '');
-          
+
           setTimeout(() => {
             showModal(
               '¡Racha Interrumpida - Reinicio desde el Nivel 1!',
@@ -794,11 +815,40 @@ function initLoveMeter100Levels() {
   let requiredClicks = currentLevel * 10;
 
   updateUIState();
+  setInterval(updateCountdown, 1000);
+
+  function updateCountdown() {
+    const now = new Date();
+    const currentDateKey = getLocalDateKey(now);
+
+    // Si cambia el día con la página abierta, habilitar el nivel sin recargar.
+    if (currentDateKey !== todayStr) {
+      todayStr = currentDateKey;
+      checkStreakValidity();
+      updateUIState();
+    }
+
+    const isCompletedToday = lastUnlockedDate === todayStr;
+    nextLevelCountdown.hidden = !isCompletedToday;
+    if (!isCompletedToday) return;
+
+    const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const remainingMs = Math.max(0, nextMidnight.getTime() - now.getTime());
+    const totalSeconds = Math.ceil(remainingMs / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const timerText = [hours, minutes, seconds].map(value => String(value).padStart(2, '0')).join(':');
+
+    countdownTimer.textContent = timerText;
+    countdownTimer.dateTime = `PT${hours}H${minutes}M${seconds}S`;
+    countdownTimer.setAttribute('aria-label', `${hours} horas, ${minutes} minutos y ${seconds} segundos`);
+  }
 
   function updateUIState() {
     requiredClicks = currentLevel * 10;
     currentLevelNum.textContent = currentLevel;
-    if (unlockedValesLevel) unlockedValesLevel.textContent = Math.min(currentLevel, 100);
+    if (unlockedValesLevel) unlockedValesLevel.textContent = Math.min(Math.max(currentLevel - 1, 0), 100);
 
     const starsUnlocked = Math.min(Math.floor((currentLevel - 1) / 10), 10);
     starsUnlockedCount.textContent = starsUnlocked;
@@ -820,6 +870,8 @@ function initLoveMeter100Levels() {
       progressBar.style.width = `${percent}%`;
       progressText.textContent = `${currentClicks} / ${requiredClicks} Clics`;
     }
+
+    updateCountdown();
   }
 
   function updateConstellationSky(starsCount) {
