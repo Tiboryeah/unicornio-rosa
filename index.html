@@ -6,7 +6,7 @@
   <title>Para Nesvi - Un Mundo Mágico de Amor</title>
   
   <!-- SEO & Social Meta Tags -->
-  <meta name="description" content="Una página web elegante, hermosa y llena de amor dedicada a Nesvi con animaciones, vales especiales y juegos diarios." />
+  <meta name="description" content="Una página web elegante, hermosa y llena de amor dedicada a Nesvi con 100 niveles de amor, vales evolutivos y desafíos diarios." />
   <meta name="theme-color" content="#ff69b4" />
 
   <!-- Google Fonts -->
@@ -113,14 +113,14 @@
             <span class="name-gradient">Nesvi</span>
           </h1>
           <p class="hero-subtitle">
-            Bienvenida a tu propio universo de encanto y romance. Aquí cada estrella brilla por tu sonrisa, cada latido celebra tu presencia y el unicornio rosa vela por tus momentos mágicos.
+            Bienvenida a tu propio universo de encanto y romance. Un viaje de 100 niveles que comienza con tomarse de las manos y culmina con una vida entera juntos.
           </p>
           <div class="hero-actions">
             <a href="#letter-section" class="btn btn-primary" id="openLetterBtn">
               <i class="fa-solid fa-envelope-open-text"></i> Abrir Tu Carta Secreta
             </a>
             <a href="#wishes-section" class="btn btn-secondary" id="magicWishesBtn">
-              <i class="fa-solid fa-gift"></i> Vales Especiales
+              <i class="fa-solid fa-gift"></i> Vales Desbloqueados
             </a>
           </div>
         </div>
@@ -281,38 +281,41 @@
       </div>
     </section>
 
-    <!-- Generador de Vales y Deseos (De Tímidos a Pícaros) -->
+    <!-- Generador de Vales Evolutivos (1 a 100) -->
     <section id="wishes-section" class="wishes-section">
       <div class="section-header">
-        <span class="section-subtitle"><i class="fa-solid fa-crystal-ball"></i> Esfera de sorpresas</span>
-        <h2 class="section-title">Oráculo de Vales Especiales</h2>
-        <p class="section-desc">Presiona la esfera mágica para obtener un vale romántico. ¡Hay desde detalles tímidos hasta momentos muy pícaros!</p>
+        <span class="section-subtitle"><i class="fa-solid fa-gift"></i> Colección de Vales Evolutivos</span>
+        <h2 class="section-title">Vales Desbloqueados de Nesvi</h2>
+        <p class="section-desc">Cada nivel superado en el desafío diario desbloquea un vale especial. ¡Cada 10 niveles desbloquearás un vale pícaro y especial!</p>
       </div>
 
       <div class="orb-container">
-        <!-- Selector de Categoría opcional o aleatorio -->
+        <!-- Selector de Categoría / Filtro de Vales -->
         <div class="coupon-category-selector">
-          <button class="cat-btn active" data-cat="all"><i class="fa-solid fa-shuffle"></i> Todos los Vales</button>
-          <button class="cat-btn" data-cat="shy"><i class="fa-solid fa-feather"></i> Tímidos & Tiernos</button>
-          <button class="cat-btn" data-cat="romantic"><i class="fa-solid fa-heart"></i> Románticos</button>
-          <button class="cat-btn" data-cat="spicy"><i class="fa-solid fa-fire"></i> Pícaros & Atrevidos</button>
+          <button class="cat-btn active" data-cat="unlocked"><i class="fa-solid fa-lock-open"></i> Vales Desbloqueados</button>
+          <button class="cat-btn" data-cat="spicy"><i class="fa-solid fa-fire"></i> Vales Pícaros (Cada 10 Niveles)</button>
+          <button class="cat-btn" data-cat="latest"><i class="fa-solid fa-crown"></i> Último Vale Obtenido</button>
+        </div>
+
+        <div class="unlocked-level-info">
+          <span class="unlocked-badge-text"><i class="fa-solid fa-key"></i> Nivel Actual de Vales: <strong><span id="unlockedValesLevel">1</span> / 100</strong></span>
         </div>
 
         <div class="magic-orb-wrapper">
           <div class="orb-glow"></div>
           <button id="magicOrb" class="magic-orb">
             <div class="orb-core">
-              <span class="orb-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
-              <span class="orb-text">OBTENER VALE</span>
+              <span class="orb-icon"><i class="fa-solid fa-gift"></i></span>
+              <span class="orb-text">EXTRAER VALE</span>
             </div>
           </button>
         </div>
 
         <div class="wish-result-card" id="wishResultCard">
-          <div class="card-ribbon" id="wishCategoryTag">VALE MÁGICO PARA NESVI</div>
-          <div class="wish-icon" id="wishIcon"><i class="fa-solid fa-gift"></i></div>
-          <h3 class="wish-title" id="wishTitle">¡Presiona la Esfera!</h3>
-          <p class="wish-description" id="wishDesc">Descubre qué sorpresa, detalle dulce o momento pícaro desbloquearás hoy.</p>
+          <div class="card-ribbon" id="wishCategoryTag">VALE DESBLOQUEADO NIVEL 1</div>
+          <div class="wish-icon" id="wishIcon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h3 class="wish-title" id="wishTitle">Presiona para ver tus Vales</h3>
+          <p class="wish-description" id="wishDesc">Descubre el vale romántico o pícaro que has ganado con tu nivel actual en la aventura.</p>
           <button id="claimWishBtn" class="btn btn-sm btn-primary" style="display: none;">
             <i class="fa-solid fa-check"></i> Reclamar Vale
           </button>
@@ -325,7 +328,7 @@
       <div class="section-header">
         <span class="section-subtitle"><i class="fa-solid fa-calendar-day"></i> Desafío Diario de Amor</span>
         <h2 class="section-title">El Sendero Secreto de Nesvi</h2>
-        <p class="section-desc">Desbloquea 1 nivel cada día. Cada día el desafío aumenta su magia. Cada 10 niveles encenderás una estrella en el firmamento.</p>
+        <p class="section-desc">Desbloquea 1 nivel cada día. Comenzamos tomándonos de las manos y avanzamos hacia una vida juntos. ¡Cada 10 niveles enciendes una estrella y desbloqueas un vale pícaro!</p>
       </div>
 
       <div class="love-meter-card">
@@ -352,7 +355,7 @@
         <p class="heart-tap-instruction" id="tapInstruction">¡Toca la gema del corazón para avanzar!</p>
 
         <div class="love-messages-log" id="loveLog">
-          <p class="log-entry"><i class="fa-solid fa-star"></i> Comienza tu aventura diaria de 100 niveles secretos...</p>
+          <p class="log-entry"><i class="fa-solid fa-star"></i> Comienza tu aventura diaria hacia el amor eterno...</p>
         </div>
       </div>
     </section>
@@ -376,7 +379,7 @@
     <div class="footer-content">
       <div class="footer-logo"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
       <p class="footer-title">Creado con infinito amor exclusivamente para <strong>Nesvi</strong></p>
-      <p class="footer-sub">Que este espacio lleno de magia y romance te acompañe todos los días.</p>
+      <p class="footer-sub">Que este espacio lleno de magia y romance te acompañe todos los días de nuestra vida.</p>
       <div class="footer-icons">
         <i class="fa-solid fa-heart"></i>
         <i class="fa-solid fa-star"></i>

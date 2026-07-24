@@ -921,6 +921,19 @@ body {
   justify-content: center;
 }
 
+.unlocked-level-info {
+  background: rgba(255, 105, 180, 0.12);
+  border: 1px solid var(--glass-border);
+  color: var(--soft-pink);
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.unlocked-badge-text strong {
+  color: var(--accent-gold);
+}
+
 .cat-btn {
   background: rgba(255, 182, 193, 0.1);
   border: 1px solid var(--glass-border);
