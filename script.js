@@ -581,7 +581,36 @@ function initLoveMeter100Levels() {
 
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
   let lastUnlockedDate = localStorage.getItem('nesvi_last_date') || '';
-  const todayStr = new Date().toISOString().split('T')[0];
+  
+  // Obtener fecha actual sin hora (00:00:00)
+  const now = new Date();
+  const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  // Verificar racha de días en la vida real
+  if (lastUnlockedDate) {
+    const parts = lastUnlockedDate.split('-');
+    if (parts.length === 3) {
+      const lastDateOnly = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      const diffMs = todayDateOnly.getTime() - lastDateOnly.getTime();
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+      // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE REINICIA TODO A NIVEL 1!
+      if (diffDays >= 2) {
+        currentLevel = 1;
+        localStorage.setItem('nesvi_level', '1');
+        localStorage.removeItem('nesvi_last_date');
+        lastUnlockedDate = '';
+        
+        setTimeout(() => {
+          showModal(
+            '¡Racha Interrumpida - Reinicio desde el Nivel 1!',
+            'Has dejado pasar un día completo sin entrar a jugar. La constelación se ha reinventado desde el Nivel 1 para comenzar de nuevo vuestro camino juntos.'
+          );
+        }, 1200);
+      }
+    }
+  }
 
   let currentClicks = 0;
   let requiredClicks = currentLevel * 10;
