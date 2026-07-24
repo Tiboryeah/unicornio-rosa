@@ -298,7 +298,7 @@
         </div>
 
         <div class="unlocked-level-info">
-          <span class="unlocked-badge-text"><i class="fa-solid fa-key"></i> Nivel Actual de Vales: <strong><span id="unlockedValesLevel">1</span> / 100</strong></span>
+          <span class="unlocked-badge-text"><i class="fa-solid fa-key"></i> Vales ganados: <strong><span id="unlockedValesLevel">0</span> / 100</strong></span>
         </div>
 
         <div class="magic-orb-wrapper">
@@ -344,6 +344,11 @@
 
         <div class="daily-status-banner" id="dailyStatusBanner">
           <p id="dailyStatusText"><i class="fa-solid fa-sparkles"></i> ¡Nivel de hoy listo para ser completado!</p>
+        </div>
+
+        <div class="next-level-countdown" id="nextLevelCountdown" hidden>
+          <span class="countdown-label"><i class="fa-regular fa-clock"></i> El siguiente nivel se desbloquea en</span>
+          <time id="countdownTimer" datetime="PT0S">00:00:00</time>
         </div>
 
         <div class="progress-bar-container">
