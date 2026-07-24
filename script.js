@@ -721,6 +721,8 @@ function initLoveMeter100Levels() {
   const loveLog = document.getElementById('loveLog');
   const unlockedValesLevel = document.getElementById('unlockedValesLevel');
 
+  const CLOUD_ENDPOINT = 'https://jsonblob.com/api/jsonBlob/019f92c5-94a0-7153-9ca9-240eccc2df5a';
+
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
   let lastUnlockedDate = localStorage.getItem('nesvi_last_date') || '';
   
@@ -729,30 +731,64 @@ function initLoveMeter100Levels() {
   const todayDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-  // Verificar racha de días en la vida real
-  if (lastUnlockedDate) {
-    const parts = lastUnlockedDate.split('-');
-    if (parts.length === 3) {
-      const lastDateOnly = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-      const diffMs = todayDateOnly.getTime() - lastDateOnly.getTime();
-      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  // Sincronizar con la Nube al cargar (para que el progreso sea global entre teléfono, laptop y cualquier dispositivo)
+  fetch(CLOUD_ENDPOINT)
+    .then(res => res.json())
+    .then(cloudData => {
+      if (cloudData && cloudData.nesvi_level) {
+        const cloudLevel = parseInt(cloudData.nesvi_level, 10);
+        const cloudDate = cloudData.nesvi_last_date || '';
 
-      // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE REINICIA TODO A NIVEL 1!
-      if (diffDays >= 2) {
-        currentLevel = 1;
-        localStorage.setItem('nesvi_level', '1');
-        localStorage.removeItem('nesvi_last_date');
-        lastUnlockedDate = '';
-        
-        setTimeout(() => {
-          showModal(
-            '¡Racha Interrumpida - Reinicio desde el Nivel 1!',
-            'Has dejado pasar un día completo sin entrar a jugar. La constelación se ha reinventado desde el Nivel 1 para comenzar de nuevo vuestro camino juntos.'
-          );
-        }, 1200);
+        if (cloudLevel > currentLevel || (cloudLevel === currentLevel && cloudDate > lastUnlockedDate)) {
+          currentLevel = cloudLevel;
+          lastUnlockedDate = cloudDate;
+          localStorage.setItem('nesvi_level', currentLevel.toString());
+          localStorage.setItem('nesvi_last_date', lastUnlockedDate);
+          checkStreakValidity();
+          updateUIState();
+        }
+      }
+    })
+    .catch(() => {});
+
+  function syncProgressToCloud(level, date) {
+    try {
+      fetch(CLOUD_ENDPOINT, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  function checkStreakValidity() {
+    if (lastUnlockedDate) {
+      const parts = lastUnlockedDate.split('-');
+      if (parts.length === 3) {
+        const lastDateOnly = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        const diffMs = todayDateOnly.getTime() - lastDateOnly.getTime();
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE REINICIA TODO A NIVEL 1 EN LA NUBE Y LOCALMENTE!
+        if (diffDays >= 2) {
+          currentLevel = 1;
+          lastUnlockedDate = '';
+          localStorage.setItem('nesvi_level', '1');
+          localStorage.removeItem('nesvi_last_date');
+          syncProgressToCloud(1, '');
+          
+          setTimeout(() => {
+            showModal(
+              '¡Racha Interrumpida - Reinicio desde el Nivel 1!',
+              'Has dejado pasar un día completo sin entrar a jugar. La constelación se ha reinventado desde el Nivel 1 para comenzar de nuevo vuestro camino juntos.'
+            );
+          }, 1200);
+        }
       }
     }
   }
+
+  checkStreakValidity();
 
   let currentClicks = 0;
   let requiredClicks = currentLevel * 10;
@@ -819,6 +855,7 @@ function initLoveMeter100Levels() {
       lastUnlockedDate = todayStr;
       localStorage.setItem('nesvi_last_date', todayStr);
       localStorage.setItem('nesvi_level', (currentLevel + 1).toString());
+      syncProgressToCloud(currentLevel + 1, todayStr);
 
       const completedLevel = currentLevel;
       const unlockedVoucher = nesvi100Vouchers.find(v => v.level === completedLevel) || nesvi100Vouchers[0];
