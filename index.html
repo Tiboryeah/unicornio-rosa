@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Nesvi - Un Mundo Mágico de Amor</title>
+  
+  <!-- SEO & Social Meta Tags -->
+  <meta name="description" content="Una página web elegante, hermosa y llena de amor dedicada a Nesvi con animaciones, vales especiales y juegos diarios." />
+  <meta name="theme-color" content="#ff69b4" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Canvas de partículas mágicas -->
+  <canvas id="magicCanvas"></canvas>
+
+  <!-- Constelación de Estrellas en el Fondo -->
+  <div id="constellationContainer" class="constellation-sky">
+    <div class="constellation-header">
+      <span class="constellation-title"><i class="fa-solid fa-star"></i> Constelación del Amor de Nesvi</span>
+      <div class="constellation-stars" id="constellationStars">
+        <div class="star-slot" data-star="1" title="Nivel 10 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="2" title="Nivel 20 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="3" title="Nivel 30 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="4" title="Nivel 40 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="5" title="Nivel 50 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="6" title="Nivel 60 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="7" title="Nivel 70 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="8" title="Nivel 80 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="9" title="Nivel 90 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+        <div class="star-slot" data-star="10" title="Nivel 100 Desbloqueado"><i class="fa-solid fa-star"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rastro de cursor mágico -->
+  <div id="cursorTrail"></div>
+
+  <!-- Panel flotante de controles de audio -->
+  <div class="audio-panel">
+    <audio id="bgMusic" src="assets/Stand_By_Me.mp3" loop preload="auto"></audio>
+    
+    <div class="volume-control-container">
+      <button id="musicToggle" class="audio-btn" title="Reproducir / Pausar Música (Stand By Me)">
+        <i class="fa-solid fa-play" id="musicIcon"></i>
+        <span class="btn-tooltip">Stand By Me</span>
+      </button>
+      <div class="volume-slider-box">
+        <i class="fa-solid fa-volume-low" id="volumeIcon"></i>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.25" class="volume-slider" title="Ajustar Volumen (Inicial: 25%)">
+        <span id="volumeValueText" class="volume-val-text">25%</span>
+      </div>
+    </div>
+
+    <button id="soundEffectsToggle" class="audio-btn active" title="Efectos de Sonido Mágicos">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span class="btn-tooltip">Efectos Mágicos</span>
+    </button>
+  </div>
+
+  <!-- Header / Navegación -->
+  <header class="main-header">
+    <div class="logo-container">
+      <span class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+      <h1 class="logo-text">Nesvi<span class="highlight">&nbsp;World</span></h1>
+    </div>
+    <nav class="nav-links">
+      <a href="#hero"><i class="fa-solid fa-house"></i> Inicio</a>
+      <a href="#letter-section"><i class="fa-solid fa-envelope"></i> Carta</a>
+      <a href="#reasons-section"><i class="fa-solid fa-heart"></i> Razones</a>
+      <a href="#wishes-section"><i class="fa-solid fa-gift"></i> Vales</a>
+      <a href="#game-section"><i class="fa-solid fa-gamepad"></i> Nivel Diario</a>
+    </nav>
+  </header>
+
+  <main class="content-wrapper">
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-backdrop"></div>
+      
+      <div class="hero-container">
+        <!-- Unicorn Artwork Frame -->
+        <div class="unicorn-card-wrapper">
+          <div class="unicorn-card-glow"></div>
+          <div class="unicorn-card">
+            <div class="unicorn-badge"><i class="fa-solid fa-crown"></i> Para Nesvi</div>
+            <img src="assets/unicorn.png" alt="Unicornio Rosa Mágico para Nesvi" class="unicorn-img" id="unicornImg">
+            <div class="sparkle-overlay">
+              <span class="floating-star s1"><i class="fa-solid fa-sparkles"></i></span>
+              <span class="floating-star s2"><i class="fa-solid fa-heart"></i></span>
+              <span class="floating-star s3"><i class="fa-solid fa-star"></i></span>
+              <span class="floating-star s4"><i class="fa-solid fa-gem"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Texts -->
+        <div class="hero-text-content">
+          <div class="romantic-tag">
+            <i class="fa-solid fa-heart-pulse"></i> Creado Especialmente Para Ti
+          </div>
+          <h1 class="hero-title">
+            Para la chica más hermosa: <br>
+            <span class="name-gradient">Nesvi</span>
+          </h1>
+          <p class="hero-subtitle">
+            Bienvenida a tu propio universo de encanto y romance. Aquí cada estrella brilla por tu sonrisa, cada latido celebra tu presencia y el unicornio rosa vela por tus momentos mágicos.
+          </p>
+          <div class="hero-actions">
+            <a href="#letter-section" class="btn btn-primary" id="openLetterBtn">
+              <i class="fa-solid fa-envelope-open-text"></i> Abrir Tu Carta Secreta
+            </a>
+            <a href="#wishes-section" class="btn btn-secondary" id="magicWishesBtn">
+              <i class="fa-solid fa-gift"></i> Vales Especiales
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Banner Quote -->
+    <div class="quote-banner">
+      <p class="quote-text">
+        <i class="fa-solid fa-quote-left"></i> 
+        "En un mundo lleno de cosas comunes, tú eres la magia más extraordinaria, Nesvi." 
+        <i class="fa-solid fa-quote-right"></i>
+      </p>
+    </div>
+
+    <!-- Carta de Amor Interactiva -->
+    <section id="letter-section" class="letter-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-envelope-open"></i> Mensaje Especial</span>
+        <h2 class="section-title">Una Carta de Amor Para Nesvi</h2>
+        <p class="section-desc">Presiona el sello del corazón para abrir tu carta secreta.</p>
+      </div>
+
+      <div class="envelope-wrapper">
+        <div class="envelope-container" id="envelope">
+          <div class="envelope-back"></div>
+          
+          <div class="letter-paper" id="letterPaper">
+            <div class="paper-header">
+              <div class="paper-stamp"><i class="fa-solid fa-heart"></i> Nesvi</div>
+              <p class="letter-date">De mi corazón para el tuyo</p>
+            </div>
+            <div class="letter-content">
+              <h3 class="letter-greeting">Mi queridísima Nesvi,</h3>
+              <p>
+                Si pudiera bajarte todas las estrellas del firmamento para armarte una corona, aun así no competirían con el brillo de tus ojos cuando sonríes.
+              </p>
+              <p>
+                Esta página web con tu unicornio rosa favorito no es solo un regalo visual, es un reflejo de lo dulce, mágica y especial que eres para mí. Traes alegría a mis días y haces que cada momento se sienta como un cuento lleno de luz.
+              </p>
+              <p>
+                Gracias por ser exactamente como eres: auténtica, radiante, tierna y maravillosa. Espero que este pequeño mundo te recuerde siempre lo muchísimo que vales y lo profundamente que te quiero.
+              </p>
+              <div class="letter-footer">
+                <p class="letter-signature">Con todo mi amor e infinito cariño,</p>
+                <p class="letter-sign-name">Tu Unicornio Mágico</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="envelope-front"></div>
+          <div class="envelope-top-flap" id="envelopeFlap"></div>
+          <div class="envelope-seal" id="envelopeSeal">
+            <i class="fa-solid fa-heart"></i>
+            <span class="seal-text">ABRIR</span>
+          </div>
+        </div>
+      </div>
+      <div class="letter-controls">
+        <button id="resetLetterBtn" class="btn btn-outline" style="display:none;">
+          <i class="fa-solid fa-rotate-left"></i> Volver a Cerrar Carta
+        </button>
+      </div>
+    </section>
+
+    <!-- El Jardín de las Razones -->
+    <section id="reasons-section" class="reasons-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-sparkles"></i> Por Qué Eres Tan Especial</span>
+        <h2 class="section-title">El Jardín de las Razones</h2>
+        <p class="section-desc">Pasa el ratón o toca las tarjetas mágicas para descubrir por qué enamoras al universo, Nesvi.</p>
+      </div>
+
+      <div class="reasons-grid">
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-face-smile-beam"></i></div>
+              <h3>Tu Sonrisa Radiante</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Tienes una sonrisa tan dulce y contagiosa que es capaz de iluminar hasta el día más nublado y llenar cualquier lugar de paz.</p>
+              <span class="card-heart"><i class="fa-solid fa-heart"></i> Nesvi</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-wand-magic"></i></div>
+              <h3>Tu Dulce Magia</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Tu amabilidad, tu tierna forma de ser y la belleza de tus sentimientos hacen que el mundo sea un lugar infinitamente más lindo.</p>
+              <span class="card-heart"><i class="fa-solid fa-sparkles"></i> Magia Pura</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-gem"></i></div>
+              <h3>Tu Esencia Única</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>No existe nadie como tú en todo el planeta. Eres inteligente, divertida, hermosa y verdaderamente irremplazable.</p>
+              <span class="card-heart"><i class="fa-solid fa-crown"></i> Joya Única</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-eye"></i></div>
+              <h3>La Mirada en tus Ojos</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>En tus ojos se refleja una ternura que cautiva de inmediato y una chispa que contagia emoción por la vida.</p>
+              <span class="card-heart"><i class="fa-solid fa-star"></i> Estrellas en ti</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-comments"></i></div>
+              <h3>Hablar Contigo</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Cada conversación contigo es mi momento favorito del día. Escuchar tu voz y compartir risas a tu lado es pura felicidad.</p>
+              <span class="card-heart"><i class="fa-solid fa-comment-dots"></i> Mi Momento Favorito</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-infinity"></i></div>
+              <h3>Amor Incondicional</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Simplemente por ser tú, mereces todo el amor, la ternura, los abrazos y la felicidad que el universo tiene para ofrecer.</p>
+              <span class="card-heart"><i class="fa-solid fa-infinity"></i> Por Siempre</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generador de Vales y Deseos (De Tímidos a Pícaros) -->
+    <section id="wishes-section" class="wishes-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-crystal-ball"></i> Esfera de sorpresas</span>
+        <h2 class="section-title">Oráculo de Vales Especiales</h2>
+        <p class="section-desc">Presiona la esfera mágica para obtener un vale romántico. ¡Hay desde detalles tímidos hasta momentos muy pícaros!</p>
+      </div>
+
+      <div class="orb-container">
+        <!-- Selector de Categoría opcional o aleatorio -->
+        <div class="coupon-category-selector">
+          <button class="cat-btn active" data-cat="all"><i class="fa-solid fa-shuffle"></i> Todos los Vales</button>
+          <button class="cat-btn" data-cat="shy"><i class="fa-solid fa-feather"></i> Tímidos & Tiernos</button>
+          <button class="cat-btn" data-cat="romantic"><i class="fa-solid fa-heart"></i> Románticos</button>
+          <button class="cat-btn" data-cat="spicy"><i class="fa-solid fa-fire"></i> Pícaros & Atrevidos</button>
+        </div>
+
+        <div class="magic-orb-wrapper">
+          <div class="orb-glow"></div>
+          <button id="magicOrb" class="magic-orb">
+            <div class="orb-core">
+              <span class="orb-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+              <span class="orb-text">OBTENER VALE</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="wish-result-card" id="wishResultCard">
+          <div class="card-ribbon" id="wishCategoryTag">VALE MÁGICO PARA NESVI</div>
+          <div class="wish-icon" id="wishIcon"><i class="fa-solid fa-gift"></i></div>
+          <h3 class="wish-title" id="wishTitle">¡Presiona la Esfera!</h3>
+          <p class="wish-description" id="wishDesc">Descubre qué sorpresa, detalle dulce o momento pícaro desbloquearás hoy.</p>
+          <button id="claimWishBtn" class="btn btn-sm btn-primary" style="display: none;">
+            <i class="fa-solid fa-check"></i> Reclamar Vale
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Juego Interactivo Diario: 100 Niveles Secretos -->
+    <section id="game-section" class="game-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-calendar-day"></i> Desafío Diario de Amor</span>
+        <h2 class="section-title">El Sendero Secreto de Nesvi</h2>
+        <p class="section-desc">Desbloquea 1 nivel cada día. Cada día el desafío aumenta su magia. Cada 10 niveles encenderás una estrella en el firmamento.</p>
+      </div>
+
+      <div class="love-meter-card">
+        <div class="meter-header">
+          <div class="level-badge" id="loveLevelBadge"><i class="fa-solid fa-lock-open"></i> Nivel <span id="currentLevelNum">1</span></div>
+          <div class="stars-unlocked-badge"><i class="fa-solid fa-star"></i> Estrellas: <span id="starsUnlockedCount">0</span> / 10</div>
+        </div>
+
+        <div class="daily-status-banner" id="dailyStatusBanner">
+          <p id="dailyStatusText"><i class="fa-solid fa-sparkles"></i> ¡Nivel de hoy listo para ser completado!</p>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar"></div>
+          <span class="progress-text" id="progressText">0 / 10 Clics</span>
+        </div>
+
+        <div class="heart-button-wrapper">
+          <div class="heart-pulse-bg"></div>
+          <button id="bigHeartBtn" class="big-heart-btn">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+        <p class="heart-tap-instruction" id="tapInstruction">¡Toca la gema del corazón para avanzar!</p>
+
+        <div class="love-messages-log" id="loveLog">
+          <p class="log-entry"><i class="fa-solid fa-star"></i> Comienza tu aventura diaria de 100 niveles secretos...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carrusel de Frases Románticas -->
+    <section class="quotes-carousel-section">
+      <div class="carousel-container">
+        <button id="prevQuote" class="carousel-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="quote-slide active" id="quoteSlide">
+          <i class="fa-solid fa-quote-left quote-mark"></i>
+          <p class="quote-body" id="quoteBody">"Si Nesvi fuera una estrella, iluminaría toda la galaxia sin esfuerzo."</p>
+          <span class="quote-author">- Pensamiento Mágico</span>
+        </div>
+        <button id="nextQuote" class="carousel-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <div class="footer-logo"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <p class="footer-title">Creado con infinito amor exclusivamente para <strong>Nesvi</strong></p>
+      <p class="footer-sub">Que este espacio lleno de magia y romance te acompañe todos los días.</p>
+      <div class="footer-icons">
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-sparkles"></i>
+        <i class="fa-solid fa-crown"></i>
+        <i class="fa-solid fa-gem"></i>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal para Vale Reclamado / Nivel Completado -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <button id="closeModal" class="modal-close-btn">&times;</button>
+      <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-crown"></i></div>
+      <h3 id="modalTitle">¡Vale Reclamado con Éxito!</h3>
+      <p id="modalBody">Tu vale mágico se ha guardado correctamente.</p>
+      <button id="modalOkBtn" class="btn btn-primary">Aceptar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
