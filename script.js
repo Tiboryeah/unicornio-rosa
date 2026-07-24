@@ -494,6 +494,7 @@ function initMagicOrb() {
   const title = document.getElementById('wishTitle');
   const desc = document.getElementById('wishDesc');
   const claimBtn = document.getElementById('claimWishBtn');
+  const downloadBtn = document.getElementById('downloadWishBtn');
   const categoryBtns = document.querySelectorAll('.cat-btn');
   const unlockedLevelSpan = document.getElementById('unlockedValesLevel');
 
@@ -514,7 +515,7 @@ function initMagicOrb() {
     
     // Determine unlocked levels count based on user progress (at least Level 1)
     const currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
-    if (unlockedLevelSpan) unlockedLevelSpan.textContent = currentLevel;
+    if (unlockedLevelSpan) unlockedLevelSpan.textContent = Math.min(currentLevel, 100);
 
     // Filter coupons up to current level
     const unlockedPool = nesvi100Vouchers.filter(c => c.level <= currentLevel);
@@ -549,6 +550,7 @@ function initMagicOrb() {
     title.textContent = currentCoupon.title;
     desc.textContent = currentCoupon.desc;
     claimBtn.style.display = 'inline-flex';
+    if (downloadBtn) downloadBtn.style.display = 'inline-flex';
     card.classList.add('glow');
 
     spawnHeartExplosion(orb.getBoundingClientRect());
@@ -562,6 +564,146 @@ function initMagicOrb() {
       );
     }
   });
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      if (currentCoupon) {
+        downloadVoucherImage(currentCoupon);
+        playMagicalChime(900);
+      }
+    });
+  }
+}
+
+/* ==========================================================================
+   Generador de Imagen Canvas de Vales para Descarga (PNG Alta Resolución)
+   ========================================================================== */
+function downloadVoucherImage(coupon) {
+  if (!coupon) return;
+
+  const canvas = document.createElement('canvas');
+  const w = 1200;
+  const h = 750;
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext('2d');
+
+  // Fondo degradado romántico
+  const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+  bgGrad.addColorStop(0, '#1a0724');
+  bgGrad.addColorStop(0.5, '#3b0d45');
+  bgGrad.addColorStop(1, '#120419');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Borde neón pastel
+  ctx.strokeStyle = coupon.isSpicy ? '#ff4757' : '#ff69b4';
+  ctx.lineWidth = 8;
+  ctx.strokeRect(20, 20, w - 40, h - 40);
+
+  // Marco interno de tarjeta
+  ctx.fillStyle = 'rgba(255, 182, 193, 0.08)';
+  ctx.strokeStyle = 'rgba(255, 215, 0, 0.6)';
+  ctx.lineWidth = 2;
+  const cardX = 40;
+  const cardY = 40;
+  const cardW = w - 80;
+  const cardH = h - 80;
+
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(cardX, cardY, cardW, cardH, 28);
+  } else {
+    ctx.rect(cardX, cardY, cardW, cardH);
+  }
+  ctx.fill();
+  ctx.stroke();
+
+  // Etiqueta superior
+  const tagW = 540;
+  const tagH = 50;
+  const tagX = (w - tagW) / 2;
+  const tagY = 75;
+
+  const tagGrad = ctx.createLinearGradient(tagX, tagY, tagX + tagW, tagY);
+  if (coupon.isSpicy) {
+    tagGrad.addColorStop(0, '#ff4757');
+    tagGrad.addColorStop(1, '#ff793f');
+  } else {
+    tagGrad.addColorStop(0, '#ffd700');
+    tagGrad.addColorStop(1, '#ff9800');
+  }
+  ctx.fillStyle = tagGrad;
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(tagX, tagY, tagW, tagH, 25);
+  } else {
+    ctx.rect(tagX, tagY, tagW, tagH);
+  }
+  ctx.fill();
+
+  ctx.fillStyle = coupon.isSpicy ? '#ffffff' : '#000000';
+  ctx.font = 'bold 22px "Outfit", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(`VALE NIVEL ${coupon.level} - ${coupon.isSpicy ? 'PÍCARO & ATREVIDO' : 'DESBLOQUEADO'}`, w / 2, tagY + 33);
+
+  // Estrellas decorativas en esquinas
+  ctx.fillStyle = '#ffd700';
+  ctx.font = '26px sans-serif';
+  const starCoords = [[80, 90], [1120, 90], [80, 670], [1120, 670], [140, 380], [1060, 380]];
+  starCoords.forEach(([sx, sy]) => ctx.fillText('★', sx, sy));
+
+  // Título del vale
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 42px "Outfit", sans-serif';
+  wrapCanvasText(ctx, coupon.title.toUpperCase(), w / 2, 230, cardW - 100, 52);
+
+  // Línea divisora
+  ctx.strokeStyle = 'rgba(255, 105, 180, 0.4)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(w / 2 - 200, 420);
+  ctx.lineTo(w / 2 + 200, 420);
+  ctx.stroke();
+
+  // Descripción del vale
+  ctx.fillStyle = '#f8c8dc';
+  ctx.font = '28px "Quicksand", sans-serif';
+  wrapCanvasText(ctx, `"${coupon.desc}"`, w / 2, 480, cardW - 140, 40);
+
+  // Firma inferior
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 26px "Dancing Script", cursive';
+  ctx.fillText('Nesvi World - Creado especialmente para Nesvi con todo mi amor', w / 2, h - 85);
+
+  // Descarga instantánea de imagen PNG
+  const dataUrl = canvas.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.download = `Vale_Nesvi_Nivel_${coupon.level}.png`;
+  link.href = dataUrl;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  let currentY = y;
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line.trim(), x, currentY);
+      line = words[n] + ' ';
+      currentY += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line.trim(), x, currentY);
 }
 
 /* ==========================================================================

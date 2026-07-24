@@ -1090,11 +1090,12 @@ body {
   margin-bottom: 10px;
 }
 
-.wish-description {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.5;
-  margin-bottom: 20px;
+.wish-actions-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 15px;
 }
 
 /* Juego Interactivo Diario */
