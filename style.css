@@ -87,43 +87,52 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 95;
-  width: 90%;
-  max-width: 800px;
+  width: auto;
+  max-width: 92vw;
   pointer-events: none;
 }
 
 .constellation-header {
-  background: rgba(20, 5, 25, 0.65);
-  backdrop-filter: blur(12px);
+  background: rgba(20, 5, 25, 0.85);
+  backdrop-filter: blur(14px);
   border: 1px solid var(--glass-border);
   border-radius: 30px;
-  padding: 8px 24px;
+  padding: 6px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
   pointer-events: auto;
+  box-sizing: border-box;
 }
 
 .constellation-title {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--soft-pink);
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .constellation-stars {
   display: flex;
-  gap: 10px;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .star-slot {
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.15);
   transition: all 0.5s ease;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .star-slot.lit {
@@ -1458,7 +1467,7 @@ body {
 
   .constellation-sky {
     top: 70px;
-    width: 95%;
+    max-width: 95vw;
   }
 
   .nav-links {
@@ -1478,5 +1487,47 @@ body {
   .envelope-front {
     border-left-width: 45vw;
     border-right-width: 45vw;
+  }
+}
+
+@media (max-width: 650px) {
+  .constellation-sky {
+    top: 68px;
+    max-width: 98vw;
+    width: 98vw;
+  }
+
+  .constellation-header {
+    padding: 5px 10px;
+    gap: 6px;
+    border-radius: 20px;
+    justify-content: center;
+  }
+
+  .constellation-title {
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+
+  .constellation-stars {
+    gap: 4px;
+  }
+
+  .star-slot {
+    font-size: 0.72rem;
+  }
+
+  .audio-panel {
+    bottom: 15px;
+    right: 15px;
+    gap: 8px;
+  }
+
+  .volume-slider-box {
+    padding: 5px 8px;
+  }
+
+  .volume-slider {
+    width: 60px;
   }
 }
