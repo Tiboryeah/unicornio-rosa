@@ -755,6 +755,7 @@ function initLoveMeter100Levels() {
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
   let lastUnlockedDate = localStorage.getItem('nesvi_last_date') || '';
   let nesviHearts = parseInt(localStorage.getItem('nesvi_hearts') || '3', 10);
+  let pendingDescuido = (localStorage.getItem('nesvi_pending_descuido') === 'true');
 
   function getLocalDateKey(date = new Date()) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -782,7 +783,7 @@ function initLoveMeter100Levels() {
     }
   }
 
-  // Sincronizar con la Nube al cargar (para que el progreso sea global entre teléfono, laptop y cualquier dispositivo)
+  // Sincronizar con la Nube al cargar
   fetch(CLOUD_ENDPOINT)
     .then(res => res.json())
     .then(cloudData => {
@@ -790,6 +791,10 @@ function initLoveMeter100Levels() {
         if (cloudData.nesvi_hearts !== undefined) {
           nesviHearts = parseInt(cloudData.nesvi_hearts, 10);
           localStorage.setItem('nesvi_hearts', nesviHearts.toString());
+        }
+        if (cloudData.pending_descuido !== undefined) {
+          pendingDescuido = cloudData.pending_descuido;
+          localStorage.setItem('nesvi_pending_descuido', pendingDescuido ? 'true' : 'false');
         }
         const cloudLevel = parseInt(cloudData.nesvi_level || '1', 10);
         const cloudDate = cloudData.nesvi_last_date || '';
@@ -810,12 +815,12 @@ function initLoveMeter100Levels() {
       checkStreakValidity();
     });
 
-  function syncProgressToCloud(level, date, hearts = nesviHearts) {
+  function syncProgressToCloud(level, date, hearts = nesviHearts, pending = pendingDescuido) {
     try {
       fetch(CLOUD_ENDPOINT, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date, nesvi_hearts: hearts })
+        body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date, nesvi_hearts: hearts, pending_descuido: pending })
       }).catch(() => {});
     } catch (e) {}
   }
@@ -826,6 +831,18 @@ function initLoveMeter100Levels() {
       return;
     }
 
+    // Si hay un descuido pendiente sin confirmar por el usuario, mostrar la animación en cada visita
+    if (pendingDescuido) {
+      setTimeout(() => {
+        triggerDescuidoBurnSequence(nesviHearts, () => {
+          pendingDescuido = false;
+          localStorage.setItem('nesvi_pending_descuido', 'false');
+          syncProgressToCloud(currentLevel, lastUnlockedDate, nesviHearts, false);
+        });
+      }, 800);
+      return;
+    }
+
     if (lastUnlockedDate) {
       const parts = lastUnlockedDate.split('-');
       if (parts.length === 3) {
@@ -833,22 +850,28 @@ function initLoveMeter100Levels() {
         const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡PIERDE 1 CORAZÓN!
+        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡MARCAR DESCUIDO PENDIENTE Y PERDER CORAZÓN!
         if (diffDays >= 2) {
           nesviHearts = Math.max(0, nesviHearts - 1);
           currentLevel = 1;
           lastUnlockedDate = '';
+          pendingDescuido = true;
           localStorage.setItem('nesvi_level', '1');
           localStorage.setItem('nesvi_hearts', nesviHearts.toString());
+          localStorage.setItem('nesvi_pending_descuido', 'true');
           localStorage.removeItem('nesvi_last_date');
-          syncProgressToCloud(1, '', nesviHearts);
+          syncProgressToCloud(1, '', nesviHearts, true);
           updateHeartsHeaderUI(nesviHearts);
 
           setTimeout(() => {
             if (nesviHearts <= 0) {
               triggerTotalDestructionState();
             } else {
-              triggerDescuidoBurnSequence(nesviHearts);
+              triggerDescuidoBurnSequence(nesviHearts, () => {
+                pendingDescuido = false;
+                localStorage.setItem('nesvi_pending_descuido', 'false');
+                syncProgressToCloud(1, '', nesviHearts, false);
+              });
             }
           }, 800);
         }
@@ -1062,7 +1085,7 @@ function showModal(title, body) {
 /* ==========================================================================
    10. Animación Trágica de Descuido y Destrucción Total (3 Vidas)
    ========================================================================== */
-function triggerDescuidoBurnSequence(heartsRemaining) {
+function triggerDescuidoBurnSequence(heartsRemaining, onConfirm) {
   const overlay = document.getElementById('tragicBurnOverlay');
   const canvas = document.getElementById('burnCanvas');
   const title = document.getElementById('tragicTitle');
@@ -1105,6 +1128,9 @@ function triggerDescuidoBurnSequence(heartsRemaining) {
 
   if (rebuildBtn) {
     rebuildBtn.onclick = () => {
+      if (typeof onConfirm === 'function') {
+        onConfirm();
+      }
       overlay.style.transition = 'opacity 0.8s ease';
       overlay.style.opacity = '0';
       setTimeout(() => {
