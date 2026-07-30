@@ -736,20 +736,6 @@ function initLoveMeter100Levels() {
   const nextLevelCountdown = document.getElementById('nextLevelCountdown');
   const countdownTimer = document.getElementById('countdownTimer');
 
-function initLoveMeter100Levels() {
-  const bigHeart = document.getElementById('bigHeartBtn');
-  const currentLevelNum = document.getElementById('currentLevelNum');
-  const starsUnlockedCount = document.getElementById('starsUnlockedCount');
-  const dailyStatusBanner = document.getElementById('dailyStatusBanner');
-  const dailyStatusText = document.getElementById('dailyStatusText');
-  const progressBar = document.getElementById('progressBar');
-  const progressText = document.getElementById('progressText');
-  const tapInstruction = document.getElementById('tapInstruction');
-  const loveLog = document.getElementById('loveLog');
-  const unlockedValesLevel = document.getElementById('unlockedValesLevel');
-  const nextLevelCountdown = document.getElementById('nextLevelCountdown');
-  const countdownTimer = document.getElementById('countdownTimer');
-
   const CLOUD_ENDPOINT = 'https://jsonblob.com/api/jsonBlob/019fb415-e6ca-7bf4-9788-a090627671bd';
 
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
@@ -1263,49 +1249,4 @@ function playTragicBurningSound() {
   } catch (e) {}
 }
 
-// Inicializador de Botones de Prueba en Entorno Local (localhost / 127.0.0.1)
-function setupLocalTestButtons() {
-  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
-  const testContainer = document.querySelector('.test-preview-buttons');
 
-  if (testContainer) {
-    if (isLocal) {
-      testContainer.style.display = 'flex';
-    } else {
-      testContainer.style.display = 'none';
-    }
-  }
-
-  // Atajos de teclado (Shift + B / Shift + D)
-  window.addEventListener('keydown', (e) => {
-    if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
-      triggerDescuidoBurnSequence(2);
-    }
-    if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
-      triggerTotalDestructionState();
-    }
-  });
-
-  const testDescuido = document.getElementById('testDescuidoBtn');
-  const testDestruction = document.getElementById('testDestructionBtn');
-
-  if (testDescuido) {
-    testDescuido.onclick = (e) => {
-      e.preventDefault();
-      triggerDescuidoBurnSequence(2);
-    };
-  }
-
-  if (testDestruction) {
-    testDestruction.onclick = (e) => {
-      e.preventDefault();
-      triggerTotalDestructionState();
-    };
-  }
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupLocalTestButtons);
-} else {
-  setupLocalTestButtons();
-}

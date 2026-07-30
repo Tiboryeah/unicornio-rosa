@@ -160,50 +160,6 @@ body {
   text-shadow: none;
 }
 
-/* Botones Flotantes para Prueba Local */
-.test-preview-buttons {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 999999;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: auto;
-}
-
-.test-btn {
-  background: rgba(20, 5, 25, 0.9);
-  border: 1px solid var(--soft-pink);
-  color: #ffffff;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
-}
-
-.test-btn:hover {
-  transform: scale(1.05);
-  border-color: #ff4757;
-}
-
-.descuido-btn {
-  border-color: #ff793f;
-  color: #ffda79;
-}
-
-.destruction-btn {
-  border-color: #ff4757;
-  color: #ff6b81;
-}
-
 .constellation-stars {
   display: flex;
   gap: 6px;
