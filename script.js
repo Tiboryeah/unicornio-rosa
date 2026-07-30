@@ -1263,41 +1263,49 @@ function playTragicBurningSound() {
   } catch (e) {}
 }
 
-// Botones y atajos de prueba ÚNICAMENTE en entorno local (localhost / 127.0.0.1)
-document.addEventListener('DOMContentLoaded', () => {
-  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+// Inicializador de Botones de Prueba en Entorno Local (localhost / 127.0.0.1)
+function setupLocalTestButtons() {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
   const testContainer = document.querySelector('.test-preview-buttons');
 
-  if (isLocal && testContainer) {
-    testContainer.style.display = 'flex';
-  } else if (testContainer) {
-    testContainer.style.display = 'none';
+  if (testContainer) {
+    if (isLocal) {
+      testContainer.style.display = 'flex';
+    } else {
+      testContainer.style.display = 'none';
+    }
   }
 
-  // Atajos de teclado solo en local
-  if (isLocal) {
-    window.addEventListener('keydown', (e) => {
-      if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
-        triggerDescuidoBurnSequence(2);
-      }
-      if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
-        triggerTotalDestructionState();
-      }
-    });
-  }
+  // Atajos de teclado (Shift + B / Shift + D)
+  window.addEventListener('keydown', (e) => {
+    if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
+      triggerDescuidoBurnSequence(2);
+    }
+    if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+      triggerTotalDestructionState();
+    }
+  });
 
   const testDescuido = document.getElementById('testDescuidoBtn');
   const testDestruction = document.getElementById('testDestructionBtn');
 
   if (testDescuido) {
-    testDescuido.addEventListener('click', () => {
+    testDescuido.onclick = (e) => {
+      e.preventDefault();
       triggerDescuidoBurnSequence(2);
-    });
+    };
   }
 
   if (testDestruction) {
-    testDestruction.addEventListener('click', () => {
+    testDestruction.onclick = (e) => {
+      e.preventDefault();
       triggerTotalDestructionState();
-    });
+    };
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupLocalTestButtons);
+} else {
+  setupLocalTestButtons();
+}
