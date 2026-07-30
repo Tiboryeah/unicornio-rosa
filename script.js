@@ -1248,3 +1248,21 @@ window.addEventListener('keydown', (e) => {
     triggerTotalDestructionState();
   }
 });
+
+// Botones flotantes de prueba en vivo en pantalla
+document.addEventListener('DOMContentLoaded', () => {
+  const testDescuido = document.getElementById('testDescuidoBtn');
+  const testDestruction = document.getElementById('testDestructionBtn');
+
+  if (testDescuido) {
+    testDescuido.addEventListener('click', () => {
+      triggerDescuidoBurnSequence(2);
+    });
+  }
+
+  if (testDestruction) {
+    testDestruction.addEventListener('click', () => {
+      triggerTotalDestructionState();
+    });
+  }
+});

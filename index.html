@@ -400,6 +400,201 @@
         <i class="fa-solid fa-star"></i>
         <i class="fa-solid fa-sparkles"></i>
         <i class="fa-solid fa-crown"></i>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Tienes una sonrisa tan dulce y contagiosa que es capaz de iluminar hasta el día más nublado y llenar cualquier lugar de paz.</p>
+              <span class="card-heart"><i class="fa-solid fa-heart"></i> Nesvi</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-wand-magic"></i></div>
+              <h3>Tu Dulce Magia</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Tu amabilidad, tu tierna forma de ser y la belleza de tus sentimientos hacen que el mundo sea un lugar infinitamente más lindo.</p>
+              <span class="card-heart"><i class="fa-solid fa-sparkles"></i> Magia Pura</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-gem"></i></div>
+              <h3>Tu Esencia Única</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>No existe nadie como tú en todo el planeta. Eres inteligente, divertida, hermosa y verdaderamente irremplazable.</p>
+              <span class="card-heart"><i class="fa-solid fa-crown"></i> Joya Única</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-eye"></i></div>
+              <h3>La Mirada en tus Ojos</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>En tus ojos se refleja una ternura que cautiva de inmediato y una chispa que contagia emoción por la vida.</p>
+              <span class="card-heart"><i class="fa-solid fa-star"></i> Estrellas en ti</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-comments"></i></div>
+              <h3>Hablar Contigo</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Cada conversación contigo es mi momento favorito del día. Escuchar tu voz y compartir risas a tu lado es pura felicidad.</p>
+              <span class="card-heart"><i class="fa-solid fa-comment-dots"></i> Mi Momento Favorito</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reason-card">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="reason-icon"><i class="fa-solid fa-infinity"></i></div>
+              <h3>Amor Incondicional</h3>
+              <span class="card-hint">Toca para voltear</span>
+            </div>
+            <div class="card-back">
+              <p>Simplemente por ser tú, mereces todo el amor, la ternura, los abrazos y la felicidad que el universo tiene para ofrecer.</p>
+              <span class="card-heart"><i class="fa-solid fa-infinity"></i> Por Siempre</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generador de Vales Evolutivos (1 a 100) -->
+    <section id="wishes-section" class="wishes-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-gift"></i> Colección de Vales Evolutivos</span>
+        <h2 class="section-title">Vales Desbloqueados de Nesvi</h2>
+        <p class="section-desc">Cada nivel superado en el desafío diario desbloquea un vale especial. ¡Cada 10 niveles desbloquearás un vale pícaro y especial!</p>
+      </div>
+
+      <div class="orb-container">
+        <!-- Selector de Categoría / Filtro de Vales -->
+        <div class="coupon-category-selector">
+          <button class="cat-btn active" data-cat="unlocked"><i class="fa-solid fa-lock-open"></i> Vales Desbloqueados</button>
+          <button class="cat-btn" data-cat="spicy"><i class="fa-solid fa-fire"></i> Vales Pícaros (Cada 10 Niveles)</button>
+          <button class="cat-btn" data-cat="latest"><i class="fa-solid fa-crown"></i> Último Vale Obtenido</button>
+        </div>
+
+        <div class="unlocked-level-info">
+          <span class="unlocked-badge-text"><i class="fa-solid fa-key"></i> Vales ganados: <strong><span id="unlockedValesLevel">0</span> / 100</strong></span>
+        </div>
+
+        <div class="magic-orb-wrapper">
+          <div class="orb-glow"></div>
+          <button id="magicOrb" class="magic-orb">
+            <div class="orb-core">
+              <span class="orb-icon"><i class="fa-solid fa-gift"></i></span>
+              <span class="orb-text">EXTRAER VALE</span>
+            </div>
+          </button>
+        </div>
+
+        <div class="wish-result-card" id="wishResultCard">
+          <div class="card-ribbon" id="wishCategoryTag">VALE DESBLOQUEADO NIVEL 1</div>
+          <div class="wish-icon" id="wishIcon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h3 class="wish-title" id="wishTitle">Presiona para ver tus Vales</h3>
+          <p class="wish-description" id="wishDesc">Descubre el vale romántico o pícaro que has ganado con tu nivel actual en la aventura.</p>
+          <div class="wish-actions-group">
+            <button id="claimWishBtn" class="btn btn-sm btn-primary" style="display: none;">
+              <i class="fa-solid fa-check"></i> Reclamar Vale
+            </button>
+            <button id="downloadWishBtn" class="btn btn-sm btn-secondary" style="display: none;">
+              <i class="fa-solid fa-download"></i> Descargar Vale (Imagen)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Juego Interactivo Diario: 100 Niveles Secretos -->
+    <section id="game-section" class="game-section">
+      <div class="section-header">
+        <span class="section-subtitle"><i class="fa-solid fa-calendar-day"></i> Desafío Diario de Amor</span>
+        <h2 class="section-title">El Sendero Secreto de Nesvi</h2>
+        <p class="section-desc">Desbloquea 1 nivel cada día. Comenzamos tomándonos de las manos y avanzamos hacia una vida juntos. ¡Cada 10 niveles enciendes una estrella y desbloqueas un vale pícaro!</p>
+      </div>
+
+      <div class="love-meter-card">
+        <div class="meter-header">
+          <div class="level-badge" id="loveLevelBadge"><i class="fa-solid fa-lock-open"></i> Nivel <span id="currentLevelNum">1</span></div>
+          <div class="stars-unlocked-badge"><i class="fa-solid fa-star"></i> Estrellas: <span id="starsUnlockedCount">0</span> / 10</div>
+        </div>
+
+        <div class="daily-status-banner" id="dailyStatusBanner">
+          <p id="dailyStatusText"><i class="fa-solid fa-sparkles"></i> ¡Nivel de hoy listo para ser completado!</p>
+        </div>
+
+        <div class="next-level-countdown" id="nextLevelCountdown" hidden>
+          <span class="countdown-label"><i class="fa-regular fa-clock"></i> El siguiente nivel se desbloquea en</span>
+          <time id="countdownTimer" datetime="PT0S">00:00:00</time>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar"></div>
+          <span class="progress-text" id="progressText">0 / 10 Clics</span>
+        </div>
+
+        <div class="heart-button-wrapper">
+          <div class="heart-pulse-bg"></div>
+          <button id="bigHeartBtn" class="big-heart-btn">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+        <p class="heart-tap-instruction" id="tapInstruction">¡Toca la gema del corazón para avanzar!</p>
+
+        <div class="love-messages-log" id="loveLog">
+          <p class="log-entry"><i class="fa-solid fa-star"></i> Comienza tu aventura diaria hacia el amor eterno...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carrusel de Frases Románticas -->
+    <section class="quotes-carousel-section">
+      <div class="carousel-container">
+        <button id="prevQuote" class="carousel-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="quote-slide active" id="quoteSlide">
+          <i class="fa-solid fa-quote-left quote-mark"></i>
+          <p class="quote-body" id="quoteBody">"Si Nesvi fuera una estrella, iluminaría toda la galaxia sin esfuerzo."</p>
+          <span class="quote-author">- Pensamiento Mágico</span>
+        </div>
+        <button id="nextQuote" class="carousel-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <div class="footer-logo"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <p class="footer-title">Creado con infinito amor exclusivamente para <strong>Nesvi</strong></p>
+      <p class="footer-sub">Que este espacio lleno de magia y romance te acompañe todos los días de nuestra vida.</p>
+      <div class="footer-icons">
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-sparkles"></i>
+        <i class="fa-solid fa-crown"></i>
         <i class="fa-solid fa-gem"></i>
       </div>
     </div>
@@ -407,4 +602,49 @@
 
   <!-- Modal para Vale Reclamado / Nivel Completado -->
   <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <button id="closeModal" class="modal-close-btn">&times;</button>
+      <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-crown"></i></div>
+      <h3 class="modal-title" id="modalTitle">¡Felicidades, Nesvi!</h3>
+      <p class="modal-body-text" id="modalBodyText">Has desbloqueado un momento inolvidable.</p>
+      <button id="modalActionBtn" class="btn btn-primary">Continuar Aventura</button>
+    </div>
+  </div>
+
+  <!-- Overlay Trágico de Quemado de Vales y Racha Perdida -->
+  <div id="tragicBurnOverlay" class="tragic-burn-overlay" style="display: none;">
+    <canvas id="burnCanvas"></canvas>
+    <div class="tragic-burn-content">
+      <div class="tragic-icon-box" id="tragicIconBox">
+        <i class="fa-solid fa-heart-crack"></i>
+      </div>
+      <h2 class="tragic-title" id="tragicTitle">¿Esto solo fue un descuido?</h2>
+      <p class="tragic-message" id="tragicMessage">
+        ¿Fue solo un descuido en la prisa del día? Te doy una oportunidad más porque mi amor por ti es paciente. Pero ten cuidado... la constelación solo soporta 3 descuidos antes de destruirse para siempre.
+      </p>
+      <div class="modal-hearts-status" id="tragicHeartsVisual">
+        <span class="modal-heart-icon lit"><i class="fa-solid fa-heart"></i></span>
+        <span class="modal-heart-icon lit"><i class="fa-solid fa-heart"></i></span>
+        <span class="modal-heart-icon unlit"><i class="fa-solid fa-heart-crack"></i></span>
+      </div>
+      <div class="tragic-vouchers-burn-container" id="burningVouchersVisual">
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #1</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #10</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #50</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #100</div>
+      </div>
+      <button id="rebuildJourneyBtn" class="btn btn-tragic-action">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Tomar Una Oportunidad Más (Nivel 1)
+      </button>
+    </div>
+  </div>
+
+  <!-- Botones Flotantes para Probar las Animaciones en Vivo -->
+  <div class="test-preview-buttons">
+    <button id="testDescuidoBtn" class="test-btn descuido-btn"><i class="fa-solid fa-heart-crack"></i> Probar Descuido (2 Vidas)</button>
+    <button id="testDestructionBtn" class="test-btn destruction-btn"><i class="fa-solid fa-skull"></i> Probar Destrucción (0 Vidas)</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
