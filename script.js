@@ -768,6 +768,7 @@ function initLoveMeter100Levels() {
       }
     }
   }
+  window.updateHeartsHeaderUI = updateHeartsHeaderUI;
 
   // Sincronizar con la Nube al cargar
   fetch(CLOUD_ENDPOINT)
@@ -810,6 +811,7 @@ function initLoveMeter100Levels() {
       });
     } catch (e) {}
   }
+  window.syncProgressToCloud = syncProgressToCloud;
 
   function checkStreakValidity() {
     if (nesviHearts <= 0) {
@@ -1282,34 +1284,93 @@ function initLocalOnlyTestControls() {
       z-index: 999999;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
       pointer-events: auto;
+      background: rgba(15, 5, 20, 0.95);
+      border: 1.5px solid var(--soft-pink);
+      padding: 12px 14px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
     `;
     container.innerHTML = `
-      <button id="btnTestDescuidoLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #ff793f; color: #ffda79; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-heart-crack"></i> Probar Descuido (2 Vidas)
+      <div style="font-size: 0.72rem; font-weight: bold; color: #ffb8c6; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px;">
+        <i class="fa-solid fa-flask"></i> Panel de Pruebas (Local)
+      </div>
+      <button id="btnSimulateMissedStreak" style="background: rgba(255, 121, 63, 0.25); border: 1.5px solid #ff793f; color: #ffda79; padding: 8px 14px; border-radius: 12px; font-size: 0.76rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-heart-crack"></i> Romper Racha (-1 Corazón)
       </button>
-      <button id="btnTestDestructionLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #ff4757; color: #ff6b81; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-skull"></i> Probar Destrucción (0 Vidas)
+      <button id="btnTest2Hearts" style="background: rgba(255, 177, 66, 0.15); border: 1px solid #ffb142; color: #ffeaa7; padding: 6px 12px; border-radius: 10px; font-size: 0.74rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-heart-crack"></i> Ver Descuido (2 Corazones)
       </button>
-      <button id="btnTestResetLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #2ed573; color: #7bed9f; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
-        <i class="fa-solid fa-rotate-left"></i> Resetear a Normal (3 Vidas)
+      <button id="btnTest1Heart" style="background: rgba(255, 82, 82, 0.15); border: 1px solid #ff5252; color: #ff7979; padding: 6px 12px; border-radius: 10px; font-size: 0.74rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-heart-crack"></i> Ver Descuido (1 Corazón)
+      </button>
+      <button id="btnTestDestructionLocal" style="background: rgba(255, 71, 87, 0.25); border: 1.5px solid #ff4757; color: #ff6b81; padding: 8px 14px; border-radius: 12px; font-size: 0.76rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-skull"></i> Destrucción Total (0 Corazones)
+      </button>
+      <button id="btnTestResetLocal" style="background: rgba(46, 213, 115, 0.25); border: 1.5px solid #2ed573; color: #7bed9f; padding: 8px 14px; border-radius: 12px; font-size: 0.76rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+        <i class="fa-solid fa-rotate-left"></i> Resetear Sitio (3 Corazones)
       </button>
     `;
     document.body.appendChild(container);
   }
 
-  const btnDescuido = document.getElementById('btnTestDescuidoLocal');
+  const btnSimulateMiss = document.getElementById('btnSimulateMissedStreak');
+  const btn2Hearts = document.getElementById('btnTest2Hearts');
+  const btn1Heart = document.getElementById('btnTest1Heart');
   const btnDestruction = document.getElementById('btnTestDestructionLocal');
   const btnReset = document.getElementById('btnTestResetLocal');
 
-  if (btnDescuido) {
-    btnDescuido.onclick = (e) => {
+  // Romper Racha (-1 Corazón Progresivo)
+  if (btnSimulateMiss) {
+    btnSimulateMiss.onclick = async (e) => {
+      e.preventDefault();
+      let currentHearts = parseInt(localStorage.getItem('nesvi_hearts') || '3', 10);
+      let newHearts = Math.max(0, currentHearts - 1);
+      
+      localStorage.setItem('nesvi_hearts', newHearts.toString());
+      localStorage.setItem('nesvi_pending_descuido', newHearts > 0 ? 'true' : 'false');
+      localStorage.setItem('nesvi_level', '1');
+      localStorage.removeItem('nesvi_last_date');
+
+      if (typeof window.updateHeartsHeaderUI === 'function') {
+        window.updateHeartsHeaderUI(newHearts);
+      }
+      if (typeof window.syncProgressToCloud === 'function') {
+        await window.syncProgressToCloud(1, '', newHearts, newHearts > 0);
+      }
+
+      if (newHearts <= 0) {
+        triggerTotalDestructionState();
+      } else {
+        triggerDescuidoBurnSequence(newHearts, async () => {
+          localStorage.setItem('nesvi_pending_descuido', 'false');
+          if (typeof window.syncProgressToCloud === 'function') {
+            await window.syncProgressToCloud(1, '', newHearts, false);
+          }
+        });
+      }
+    };
+  }
+
+  // Previsualizar 2 Corazones
+  if (btn2Hearts) {
+    btn2Hearts.onclick = (e) => {
       e.preventDefault();
       triggerDescuidoBurnSequence(2);
     };
   }
 
+  // Previsualizar 1 Corazón
+  if (btn1Heart) {
+    btn1Heart.onclick = (e) => {
+      e.preventDefault();
+      triggerDescuidoBurnSequence(1);
+    };
+  }
+
+  // Previsualizar Destrucción Total
   if (btnDestruction) {
     btnDestruction.onclick = (e) => {
       e.preventDefault();
@@ -1317,18 +1378,23 @@ function initLocalOnlyTestControls() {
     };
   }
 
+  // Resetear Sitio a 3 Corazones y Nivel 1
   if (btnReset) {
-    btnReset.onclick = (e) => {
+    btnReset.onclick = async (e) => {
       e.preventDefault();
       localStorage.setItem('nesvi_level', '1');
       localStorage.setItem('nesvi_hearts', '3');
       localStorage.setItem('nesvi_pending_descuido', 'false');
       localStorage.removeItem('nesvi_last_date');
+
+      if (typeof window.syncProgressToCloud === 'function') {
+        await window.syncProgressToCloud(1, '', 3, false);
+      }
+
       const overlay = document.getElementById('tragicBurnOverlay');
       if (overlay) overlay.style.display = 'none';
       document.body.style.overflow = 'auto';
       document.body.style.pointerEvents = 'auto';
-      alert('¡Estado local reseteado a 3 Vidas y Nivel 1!');
       window.location.reload();
     };
   }
