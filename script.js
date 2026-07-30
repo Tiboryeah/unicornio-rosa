@@ -770,39 +770,48 @@ function initLoveMeter100Levels() {
   }
   window.updateHeartsHeaderUI = updateHeartsHeaderUI;
 
-  // Sincronizar con la Nube al cargar
-  fetch(CLOUD_ENDPOINT)
-    .then(res => res.json())
-    .then(cloudData => {
-      if (cloudData) {
-        if (cloudData.nesvi_hearts !== undefined) {
-          nesviHearts = parseInt(cloudData.nesvi_hearts, 10);
-          localStorage.setItem('nesvi_hearts', nesviHearts.toString());
-        }
-        if (cloudData.pending_descuido !== undefined) {
-          pendingDescuido = cloudData.pending_descuido;
-          localStorage.setItem('nesvi_pending_descuido', pendingDescuido ? 'true' : 'false');
-        }
-        const cloudLevel = parseInt(cloudData.nesvi_level || '1', 10);
-        const cloudDate = cloudData.nesvi_last_date || '';
+  const isLocalEnv = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
 
-        if (cloudLevel > currentLevel || (cloudLevel === currentLevel && cloudDate > lastUnlockedDate)) {
-          currentLevel = cloudLevel;
-          lastUnlockedDate = cloudDate;
-          localStorage.setItem('nesvi_level', currentLevel.toString());
-          localStorage.setItem('nesvi_last_date', lastUnlockedDate);
+  // En producción (GitHub Pages), sincronizar con la nube. En local, usar localStorage aislado para no alterar la nube de Nesvi.
+  if (isLocalEnv) {
+    updateHeartsHeaderUI(nesviHearts);
+    checkStreakValidity();
+    updateUIState();
+  } else {
+    fetch(CLOUD_ENDPOINT)
+      .then(res => res.json())
+      .then(cloudData => {
+        if (cloudData) {
+          if (cloudData.nesvi_hearts !== undefined) {
+            nesviHearts = parseInt(cloudData.nesvi_hearts, 10);
+            localStorage.setItem('nesvi_hearts', nesviHearts.toString());
+          }
+          if (cloudData.pending_descuido !== undefined) {
+            pendingDescuido = cloudData.pending_descuido;
+            localStorage.setItem('nesvi_pending_descuido', pendingDescuido ? 'true' : 'false');
+          }
+          const cloudLevel = parseInt(cloudData.nesvi_level || '1', 10);
+          const cloudDate = cloudData.nesvi_last_date || '';
+
+          if (cloudLevel > currentLevel || (cloudLevel === currentLevel && cloudDate > lastUnlockedDate)) {
+            currentLevel = cloudLevel;
+            lastUnlockedDate = cloudDate;
+            localStorage.setItem('nesvi_level', currentLevel.toString());
+            localStorage.setItem('nesvi_last_date', lastUnlockedDate);
+          }
+          updateHeartsHeaderUI(nesviHearts);
+          checkStreakValidity();
+          updateUIState();
         }
+      })
+      .catch(() => {
         updateHeartsHeaderUI(nesviHearts);
         checkStreakValidity();
-        updateUIState();
-      }
-    })
-    .catch(() => {
-      updateHeartsHeaderUI(nesviHearts);
-      checkStreakValidity();
-    });
+      });
+  }
 
   async function syncProgressToCloud(level, date, hearts = nesviHearts, pending = pendingDescuido) {
+    if (isLocalEnv) return; // NUNCA alterar la base de datos real de Nesvi durante pruebas locales
     try {
       await fetch(CLOUD_ENDPOINT, {
         method: 'PUT',
