@@ -1068,6 +1068,17 @@ function showModal(title, body) {
   playUnicornArpeggio();
 }
 
+function pauseAndHideAudio() {
+  const bgMusic = document.getElementById('bgMusic');
+  const audioPanel = document.querySelector('.audio-panel');
+  if (bgMusic) {
+    bgMusic.pause();
+  }
+  if (audioPanel) {
+    audioPanel.style.display = 'none';
+  }
+}
+
 /* ==========================================================================
    10. Animación Trágica de Descuido y Destrucción Total (3 Vidas)
    ========================================================================== */
@@ -1080,6 +1091,8 @@ function triggerDescuidoBurnSequence(heartsRemaining, onConfirm) {
   const rebuildBtn = document.getElementById('rebuildJourneyBtn');
   const heartsVisual = document.getElementById('tragicHeartsVisual');
   if (!overlay || !canvas) return;
+
+  pauseAndHideAudio();
 
   if (iconBox) iconBox.innerHTML = '<i class="fa-solid fa-heart-crack"></i>';
   if (title) title.textContent = '¿Esto solo fue un descuido?';
@@ -1137,6 +1150,8 @@ function triggerTotalDestructionState() {
   const rebuildBtn = document.getElementById('rebuildJourneyBtn');
   const heartsVisual = document.getElementById('tragicHeartsVisual');
   if (!overlay || !canvas) return;
+
+  pauseAndHideAudio();
 
   if (iconBox) iconBox.innerHTML = '<i class="fa-solid fa-skull" style="font-size: 4rem; color: #ff4757;"></i>';
   if (title) title.textContent = 'Dejaste morir nuestro amor...';

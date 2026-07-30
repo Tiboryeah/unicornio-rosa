@@ -1613,8 +1613,8 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(10, 2, 8, 0.96);
-  z-index: 10000;
+  background: #090208;
+  z-index: 999999;
   display: flex;
   justify-content: center;
   align-items: center;
