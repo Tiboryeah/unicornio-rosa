@@ -801,13 +801,13 @@ function initLoveMeter100Levels() {
       checkStreakValidity();
     });
 
-  function syncProgressToCloud(level, date, hearts = nesviHearts, pending = pendingDescuido) {
+  async function syncProgressToCloud(level, date, hearts = nesviHearts, pending = pendingDescuido) {
     try {
-      fetch(CLOUD_ENDPOINT, {
+      await fetch(CLOUD_ENDPOINT, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date, nesvi_hearts: hearts, pending_descuido: pending })
-      }).catch(() => {});
+      });
     } catch (e) {}
   }
 
@@ -817,14 +817,12 @@ function initLoveMeter100Levels() {
       return;
     }
 
-    // Si tiene menos de 3 corazones (ha perdido alguna vida) y no ha desbloqueado nivel hoy, mostrar animación de descuido DE INMEDIATO
-    const descuidoNeedsAck = pendingDescuido || (nesviHearts < 3 && lastUnlockedDate === '');
-
-    if (descuidoNeedsAck) {
-      triggerDescuidoBurnSequence(nesviHearts, () => {
+    // Si hay un descuido pendiente de confirmar por el usuario, mostrar la animación
+    if (pendingDescuido) {
+      triggerDescuidoBurnSequence(nesviHearts, async () => {
         pendingDescuido = false;
         localStorage.setItem('nesvi_pending_descuido', 'false');
-        syncProgressToCloud(currentLevel, lastUnlockedDate, nesviHearts, false);
+        await syncProgressToCloud(currentLevel, lastUnlockedDate, nesviHearts, false);
       });
       return;
     }
@@ -836,7 +834,7 @@ function initLoveMeter100Levels() {
         const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡MARCAR DESCUIDO PENDIENTE Y PERDER CORAZÓN DE INMEDIATO!
+        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡MARCAR DESCUIDO PENDIENTE Y PERDER CORAZÓN!
         if (diffDays >= 2) {
           nesviHearts = Math.max(0, nesviHearts - 1);
           currentLevel = 1;
@@ -852,10 +850,10 @@ function initLoveMeter100Levels() {
           if (nesviHearts <= 0) {
             triggerTotalDestructionState();
           } else {
-            triggerDescuidoBurnSequence(nesviHearts, () => {
+            triggerDescuidoBurnSequence(nesviHearts, async () => {
               pendingDescuido = false;
               localStorage.setItem('nesvi_pending_descuido', 'false');
-              syncProgressToCloud(1, '', nesviHearts, false);
+              await syncProgressToCloud(1, '', nesviHearts, false);
             });
           }
         }
@@ -1126,9 +1124,11 @@ function triggerDescuidoBurnSequence(heartsRemaining, onConfirm) {
   startEmberCanvas(canvas);
 
   if (rebuildBtn) {
-    rebuildBtn.onclick = () => {
+    rebuildBtn.onclick = async () => {
+      rebuildBtn.disabled = true;
+      rebuildBtn.style.opacity = '0.6';
       if (typeof onConfirm === 'function') {
-        onConfirm();
+        await onConfirm();
       }
       overlay.style.transition = 'opacity 0.8s ease';
       overlay.style.opacity = '0';
