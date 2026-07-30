@@ -1237,20 +1237,29 @@ function playTragicBurningSound() {
   } catch (e) {}
 }
 
-// Atajos de prueba en local:
-// Presiona Shift + B para previsualizar la animación de Descuido (Quedan 2 Corazones)
-// Presiona Shift + D para previsualizar la animación de Destrucción Total Inusable (0 Corazones)
-window.addEventListener('keydown', (e) => {
-  if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
-    triggerDescuidoBurnSequence(2);
-  }
-  if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
-    triggerTotalDestructionState();
-  }
-});
-
-// Botones flotantes de prueba en vivo en pantalla
+// Botones y atajos de prueba ÚNICAMENTE en entorno local (localhost / 127.0.0.1)
 document.addEventListener('DOMContentLoaded', () => {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const testContainer = document.querySelector('.test-preview-buttons');
+
+  if (isLocal && testContainer) {
+    testContainer.style.display = 'flex';
+  } else if (testContainer) {
+    testContainer.style.display = 'none';
+  }
+
+  // Atajos de teclado solo en local
+  if (isLocal) {
+    window.addEventListener('keydown', (e) => {
+      if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
+        triggerDescuidoBurnSequence(2);
+      }
+      if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+        triggerTotalDestructionState();
+      }
+    });
+  }
+
   const testDescuido = document.getElementById('testDescuidoBtn');
   const testDestruction = document.getElementById('testDestructionBtn');
 
