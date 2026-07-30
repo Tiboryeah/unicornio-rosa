@@ -1237,9 +1237,14 @@ function playTragicBurningSound() {
   } catch (e) {}
 }
 
-// Atajo de prueba instantánea: Presiona Shift + B para previsualizar la animación de descuido
+// Atajos de prueba en local:
+// Presiona Shift + B para previsualizar la animación de Descuido (Quedan 2 Corazones)
+// Presiona Shift + D para previsualizar la animación de Destrucción Total Inusable (0 Corazones)
 window.addEventListener('keydown', (e) => {
   if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
     triggerDescuidoBurnSequence(2);
+  }
+  if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+    triggerTotalDestructionState();
   }
 });
