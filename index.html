@@ -405,9 +405,32 @@
     <div class="modal-card">
       <button id="closeModal" class="modal-close-btn">&times;</button>
       <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-crown"></i></div>
-      <h3 id="modalTitle">¡Vale Reclamado con Éxito!</h3>
-      <p id="modalBody">Tu vale mágico se ha guardado correctamente.</p>
-      <button id="modalOkBtn" class="btn btn-primary">Aceptar</button>
+      <h3 class="modal-title" id="modalTitle">¡Felicidades, Nesvi!</h3>
+      <p class="modal-body-text" id="modalBodyText">Has desbloqueado un momento inolvidable.</p>
+      <button id="modalActionBtn" class="btn btn-primary">Continuar Aventura</button>
+    </div>
+  </div>
+
+  <!-- Overlay Trágico de Quemado de Vales y Racha Perdida -->
+  <div id="tragicBurnOverlay" class="tragic-burn-overlay" style="display: none;">
+    <canvas id="burnCanvas"></canvas>
+    <div class="tragic-burn-content">
+      <div class="tragic-icon-box">
+        <i class="fa-solid fa-heart-crack"></i>
+      </div>
+      <h2 class="tragic-title">Dejaste que nuestro amor terminara...</h2>
+      <p class="tragic-message">
+        Lamentablemente, al haber dejado pasar el tiempo, los 100 cupones y promesas que la constelación guardaba con tanto anhelo para ti se han consumido en el fuego del olvido. Los vales que jamás reclamaste han quedado hechos cenizas.
+      </p>
+      <div class="tragic-vouchers-burn-container" id="burningVouchersVisual">
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #1</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #10</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #50</div>
+        <div class="burning-voucher-card"><i class="fa-solid fa-fire"></i> Vale #100</div>
+      </div>
+      <button id="rebuildJourneyBtn" class="btn btn-tragic-action">
+        <i class="fa-solid fa-fire-flame-curved"></i> Renacer el Sendero desde el Nivel 1
+      </button>
     </div>
   </div>
 

@@ -790,7 +790,7 @@ function initLoveMeter100Levels() {
         const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE REINICIA TODO A NIVEL 1 EN LA NUBE Y LOCALMENTE!
+        // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE DESATA LA ANIMACIÓN TRÁGICA DE FUEGO Y QUEMADO DE VALES!
         if (diffDays >= 2) {
           currentLevel = 1;
           lastUnlockedDate = '';
@@ -799,11 +799,8 @@ function initLoveMeter100Levels() {
           syncProgressToCloud(1, '');
 
           setTimeout(() => {
-            showModal(
-              '¡Racha Interrumpida - Reinicio desde el Nivel 1!',
-              'Has dejado pasar un día completo sin entrar a jugar. La constelación se ha reinventado desde el Nivel 1 para comenzar de nuevo vuestro camino juntos.'
-            );
-          }, 1200);
+            triggerTragicBurnSequence();
+          }, 800);
         }
       }
     }
@@ -1010,4 +1007,114 @@ function showModal(title, body) {
   document.getElementById('modalBody').textContent = body;
   modal.classList.add('active');
   playUnicornArpeggio();
+}
+
+/* ==========================================================================
+   10. Animación Trágica e Intensa de Quemado de Vales y Racha Perdida
+   ========================================================================== */
+function triggerTragicBurnSequence() {
+  const overlay = document.getElementById('tragicBurnOverlay');
+  const canvas = document.getElementById('burnCanvas');
+  const rebuildBtn = document.getElementById('rebuildJourneyBtn');
+  if (!overlay || !canvas) return;
+
+  overlay.style.display = 'flex';
+  playTragicBurningSound();
+
+  const ctx = canvas.getContext('2d');
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  // Partículas de brasas y cenizas ardiendo
+  const particles = [];
+  for (let i = 0; i < 110; i++) {
+    particles.push({
+      x: Math.random() * width,
+      y: height + Math.random() * 200,
+      size: Math.random() * 4.5 + 1.5,
+      speedY: Math.random() * 3.5 + 1.5,
+      speedX: (Math.random() - 0.5) * 2,
+      color: ['#ff4757', '#ff793f', '#ffda79', '#ff6b81', '#2f3542'][Math.floor(Math.random() * 5)],
+      alpha: Math.random() * 0.9 + 0.1
+    });
+  }
+
+  let animId;
+  function renderEmbers() {
+    ctx.clearRect(0, 0, width, height);
+
+    particles.forEach(p => {
+      p.y -= p.speedY;
+      p.x += p.speedX;
+      p.alpha -= 0.0025;
+
+      if (p.y < -10 || p.alpha <= 0) {
+        p.y = height + 10;
+        p.x = Math.random() * width;
+        p.alpha = Math.random() * 0.9 + 0.1;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    animId = requestAnimationFrame(renderEmbers);
+  }
+
+  renderEmbers();
+
+  if (rebuildBtn) {
+    rebuildBtn.onclick = () => {
+      cancelAnimationFrame(animId);
+      overlay.style.transition = 'opacity 0.8s ease';
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.style.opacity = '1';
+        window.location.reload();
+      }, 800);
+    };
+  }
+}
+
+function playTragicBurningSound() {
+  try {
+    const audioCtx = getAudioContext();
+    if (!audioCtx) return;
+
+    // Tono triste y melancólico con acorde sombrío
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc1.type = 'sawtooth';
+    osc2.type = 'sine';
+
+    osc1.frequency.setValueAtTime(110, audioCtx.currentTime); // Nota La (A2)
+    osc2.frequency.setValueAtTime(130.81, audioCtx.currentTime); // Nota Do (C3)
+
+    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.5);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc1.start();
+    osc2.start();
+    osc1.stop(audioCtx.currentTime + 3.5);
+    osc2.stop(audioCtx.currentTime + 3.5);
+  } catch (e) {}
 }
