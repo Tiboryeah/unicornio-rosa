@@ -817,17 +817,15 @@ function initLoveMeter100Levels() {
       return;
     }
 
-    // Si tiene menos de 3 corazones (ha perdido alguna vida) y no ha desbloqueado nivel hoy, mostrar animación de descuido
+    // Si tiene menos de 3 corazones (ha perdido alguna vida) y no ha desbloqueado nivel hoy, mostrar animación de descuido DE INMEDIATO
     const descuidoNeedsAck = pendingDescuido || (nesviHearts < 3 && lastUnlockedDate === '');
 
     if (descuidoNeedsAck) {
-      setTimeout(() => {
-        triggerDescuidoBurnSequence(nesviHearts, () => {
-          pendingDescuido = false;
-          localStorage.setItem('nesvi_pending_descuido', 'false');
-          syncProgressToCloud(currentLevel, lastUnlockedDate, nesviHearts, false);
-        });
-      }, 800);
+      triggerDescuidoBurnSequence(nesviHearts, () => {
+        pendingDescuido = false;
+        localStorage.setItem('nesvi_pending_descuido', 'false');
+        syncProgressToCloud(currentLevel, lastUnlockedDate, nesviHearts, false);
+      });
       return;
     }
 
@@ -838,7 +836,7 @@ function initLoveMeter100Levels() {
         const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡MARCAR DESCUIDO PENDIENTE Y PERDER CORAZÓN!
+        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡MARCAR DESCUIDO PENDIENTE Y PERDER CORAZÓN DE INMEDIATO!
         if (diffDays >= 2) {
           nesviHearts = Math.max(0, nesviHearts - 1);
           currentLevel = 1;
@@ -851,17 +849,15 @@ function initLoveMeter100Levels() {
           syncProgressToCloud(1, '', nesviHearts, true);
           updateHeartsHeaderUI(nesviHearts);
 
-          setTimeout(() => {
-            if (nesviHearts <= 0) {
-              triggerTotalDestructionState();
-            } else {
-              triggerDescuidoBurnSequence(nesviHearts, () => {
-                pendingDescuido = false;
-                localStorage.setItem('nesvi_pending_descuido', 'false');
-                syncProgressToCloud(1, '', nesviHearts, false);
-              });
-            }
-          }, 800);
+          if (nesviHearts <= 0) {
+            triggerTotalDestructionState();
+          } else {
+            triggerDescuidoBurnSequence(nesviHearts, () => {
+              pendingDescuido = false;
+              localStorage.setItem('nesvi_pending_descuido', 'false');
+              syncProgressToCloud(1, '', nesviHearts, false);
+            });
+          }
         }
       }
     }
@@ -1049,17 +1045,19 @@ function initQuotesCarousel() {
 function initModalSystem() {
   const modal = document.getElementById('modalOverlay');
   const closeBtn = document.getElementById('closeModal');
-  const okBtn = document.getElementById('modalOkBtn');
+  const actionBtn = document.getElementById('modalActionBtn');
 
   function closeModal() {
-    modal.classList.remove('active');
+    if (modal) modal.classList.remove('active');
   }
 
-  closeBtn.addEventListener('click', closeModal);
-  okBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (actionBtn) actionBtn.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
 }
 
 function showModal(title, body) {
