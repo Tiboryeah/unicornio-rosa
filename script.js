@@ -1181,6 +1181,10 @@ function triggerTotalDestructionState() {
   document.body.style.overflow = 'hidden';
   document.body.style.pointerEvents = 'none';
   overlay.style.pointerEvents = 'auto';
+
+  // Mantener el panel de pruebas local clickeable para poder resetear
+  const testPanel = document.getElementById('localTestControlsContainer');
+  if (testPanel) testPanel.style.pointerEvents = 'auto';
 }
 
 function startEmberCanvas(canvas) {
@@ -1354,26 +1358,50 @@ function initLocalOnlyTestControls() {
     };
   }
 
-  // Previsualizar 2 Corazones
+  // Forzar estado a 2 Corazones + mostrar animación real
   if (btn2Hearts) {
-    btn2Hearts.onclick = (e) => {
+    btn2Hearts.onclick = async (e) => {
       e.preventDefault();
-      triggerDescuidoBurnSequence(2);
+      localStorage.setItem('nesvi_hearts', '2');
+      localStorage.setItem('nesvi_pending_descuido', 'true');
+      localStorage.setItem('nesvi_level', '1');
+      localStorage.removeItem('nesvi_last_date');
+      if (typeof window.updateHeartsHeaderUI === 'function') window.updateHeartsHeaderUI(2);
+      if (typeof window.syncProgressToCloud === 'function') await window.syncProgressToCloud(1, '', 2, true);
+      triggerDescuidoBurnSequence(2, async () => {
+        localStorage.setItem('nesvi_pending_descuido', 'false');
+        if (typeof window.syncProgressToCloud === 'function') await window.syncProgressToCloud(1, '', 2, false);
+      });
     };
   }
 
-  // Previsualizar 1 Corazón
+  // Forzar estado a 1 Corazón + mostrar animación real
   if (btn1Heart) {
-    btn1Heart.onclick = (e) => {
+    btn1Heart.onclick = async (e) => {
       e.preventDefault();
-      triggerDescuidoBurnSequence(1);
+      localStorage.setItem('nesvi_hearts', '1');
+      localStorage.setItem('nesvi_pending_descuido', 'true');
+      localStorage.setItem('nesvi_level', '1');
+      localStorage.removeItem('nesvi_last_date');
+      if (typeof window.updateHeartsHeaderUI === 'function') window.updateHeartsHeaderUI(1);
+      if (typeof window.syncProgressToCloud === 'function') await window.syncProgressToCloud(1, '', 1, true);
+      triggerDescuidoBurnSequence(1, async () => {
+        localStorage.setItem('nesvi_pending_descuido', 'false');
+        if (typeof window.syncProgressToCloud === 'function') await window.syncProgressToCloud(1, '', 1, false);
+      });
     };
   }
 
-  // Previsualizar Destrucción Total
+  // Forzar estado a 0 Corazones + Destrucción Total real
   if (btnDestruction) {
-    btnDestruction.onclick = (e) => {
+    btnDestruction.onclick = async (e) => {
       e.preventDefault();
+      localStorage.setItem('nesvi_hearts', '0');
+      localStorage.setItem('nesvi_pending_descuido', 'false');
+      localStorage.setItem('nesvi_level', '1');
+      localStorage.removeItem('nesvi_last_date');
+      if (typeof window.updateHeartsHeaderUI === 'function') window.updateHeartsHeaderUI(0);
+      if (typeof window.syncProgressToCloud === 'function') await window.syncProgressToCloud(1, '', 0, false);
       triggerTotalDestructionState();
     };
   }
@@ -1387,6 +1415,11 @@ function initLocalOnlyTestControls() {
       localStorage.setItem('nesvi_pending_descuido', 'false');
       localStorage.removeItem('nesvi_last_date');
 
+      if (typeof window.updateHeartsHeaderUI === 'function') {
+        window.updateHeartsHeaderUI(3);
+      }
+
+      // Sincronizar obligatoriamente con la nube ANTES de recargar
       if (typeof window.syncProgressToCloud === 'function') {
         await window.syncProgressToCloud(1, '', 3, false);
       }
