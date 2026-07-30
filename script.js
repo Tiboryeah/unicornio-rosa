@@ -817,8 +817,10 @@ function initLoveMeter100Levels() {
       return;
     }
 
-    // Si hay un descuido pendiente sin confirmar por el usuario, mostrar la animación en cada visita
-    if (pendingDescuido) {
+    // Si tiene menos de 3 corazones (ha perdido alguna vida) y no ha desbloqueado nivel hoy, mostrar animación de descuido
+    const descuidoNeedsAck = pendingDescuido || (nesviHearts < 3 && lastUnlockedDate === '');
+
+    if (descuidoNeedsAck) {
       setTimeout(() => {
         triggerDescuidoBurnSequence(nesviHearts, () => {
           pendingDescuido = false;
@@ -1247,6 +1249,82 @@ function playTragicBurningSound() {
     osc1.stop(audioCtx.currentTime + 3.5);
     osc2.stop(audioCtx.currentTime + 3.5);
   } catch (e) {}
+}
+
+/* ==========================================================================
+   11. Herramientas de Prueba Exclusivas para Servidor Local (localhost)
+   ========================================================================== */
+function initLocalOnlyTestControls() {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
+  if (!isLocal) return; // CERO botones en producción en GitHub Pages
+
+  let container = document.getElementById('localTestControlsContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'localTestControlsContainer';
+    container.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: auto;
+    `;
+    container.innerHTML = `
+      <button id="btnTestDescuidoLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #ff793f; color: #ffda79; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-heart-crack"></i> Probar Descuido (2 Vidas)
+      </button>
+      <button id="btnTestDestructionLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #ff4757; color: #ff6b81; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-skull"></i> Probar Destrucción (0 Vidas)
+      </button>
+      <button id="btnTestResetLocal" style="background: rgba(20,5,25,0.92); border: 1.5px solid #2ed573; color: #7bed9f; padding: 9px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: bold; cursor: pointer; backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-rotate-left"></i> Resetear a Normal (3 Vidas)
+      </button>
+    `;
+    document.body.appendChild(container);
+  }
+
+  const btnDescuido = document.getElementById('btnTestDescuidoLocal');
+  const btnDestruction = document.getElementById('btnTestDestructionLocal');
+  const btnReset = document.getElementById('btnTestResetLocal');
+
+  if (btnDescuido) {
+    btnDescuido.onclick = (e) => {
+      e.preventDefault();
+      triggerDescuidoBurnSequence(2);
+    };
+  }
+
+  if (btnDestruction) {
+    btnDestruction.onclick = (e) => {
+      e.preventDefault();
+      triggerTotalDestructionState();
+    };
+  }
+
+  if (btnReset) {
+    btnReset.onclick = (e) => {
+      e.preventDefault();
+      localStorage.setItem('nesvi_level', '1');
+      localStorage.setItem('nesvi_hearts', '3');
+      localStorage.setItem('nesvi_pending_descuido', 'false');
+      localStorage.removeItem('nesvi_last_date');
+      const overlay = document.getElementById('tragicBurnOverlay');
+      if (overlay) overlay.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      document.body.style.pointerEvents = 'auto';
+      alert('¡Estado local reseteado a 3 Vidas y Nivel 1!');
+      window.location.reload();
+    };
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLocalOnlyTestControls);
+} else {
+  initLocalOnlyTestControls();
 }
 
 
