@@ -118,6 +118,48 @@ body {
   flex-shrink: 0;
 }
 
+.hearts-life-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin: 0 4px;
+}
+
+.heart-life-slot {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.2);
+  transition: all 0.5s ease;
+}
+
+.heart-life-slot.lit {
+  color: #ff4757;
+  filter: drop-shadow(0 0 6px rgba(255, 71, 87, 0.8));
+  animation: heartPulse 1.8s infinite alternate ease-in-out;
+}
+
+.heart-life-slot.unlit {
+  color: #57606f;
+  filter: none;
+}
+
+.modal-hearts-status {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.modal-heart-icon.lit {
+  color: #ff4757;
+  text-shadow: 0 0 15px rgba(255, 71, 87, 0.9);
+}
+
+.modal-heart-icon.unlit {
+  color: #747d8c;
+  text-shadow: none;
+}
+
 .constellation-stars {
   display: flex;
   gap: 6px;

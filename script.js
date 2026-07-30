@@ -736,10 +736,25 @@ function initLoveMeter100Levels() {
   const nextLevelCountdown = document.getElementById('nextLevelCountdown');
   const countdownTimer = document.getElementById('countdownTimer');
 
-  const CLOUD_ENDPOINT = 'https://jsonblob.com/api/jsonBlob/019f92c5-94a0-7153-9ca9-240eccc2df5a';
+function initLoveMeter100Levels() {
+  const bigHeart = document.getElementById('bigHeartBtn');
+  const currentLevelNum = document.getElementById('currentLevelNum');
+  const starsUnlockedCount = document.getElementById('starsUnlockedCount');
+  const dailyStatusBanner = document.getElementById('dailyStatusBanner');
+  const dailyStatusText = document.getElementById('dailyStatusText');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const tapInstruction = document.getElementById('tapInstruction');
+  const loveLog = document.getElementById('loveLog');
+  const unlockedValesLevel = document.getElementById('unlockedValesLevel');
+  const nextLevelCountdown = document.getElementById('nextLevelCountdown');
+  const countdownTimer = document.getElementById('countdownTimer');
+
+  const CLOUD_ENDPOINT = 'https://jsonblob.com/api/jsonBlob/019fb415-e6ca-7bf4-9788-a090627671bd';
 
   let currentLevel = parseInt(localStorage.getItem('nesvi_level') || '1', 10);
   let lastUnlockedDate = localStorage.getItem('nesvi_last_date') || '';
+  let nesviHearts = parseInt(localStorage.getItem('nesvi_hearts') || '3', 10);
 
   function getLocalDateKey(date = new Date()) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -752,12 +767,31 @@ function initLoveMeter100Levels() {
 
   let todayStr = getLocalDateKey();
 
+  function updateHeartsHeaderUI(hearts) {
+    for (let i = 1; i <= 3; i++) {
+      const slot = document.getElementById(`heartLife${i}`);
+      if (slot) {
+        if (i <= hearts) {
+          slot.className = 'heart-life-slot lit';
+          slot.innerHTML = '<i class="fa-solid fa-heart"></i>';
+        } else {
+          slot.className = 'heart-life-slot unlit';
+          slot.innerHTML = '<i class="fa-solid fa-heart-crack"></i>';
+        }
+      }
+    }
+  }
+
   // Sincronizar con la Nube al cargar (para que el progreso sea global entre teléfono, laptop y cualquier dispositivo)
   fetch(CLOUD_ENDPOINT)
     .then(res => res.json())
     .then(cloudData => {
-      if (cloudData && cloudData.nesvi_level) {
-        const cloudLevel = parseInt(cloudData.nesvi_level, 10);
+      if (cloudData) {
+        if (cloudData.nesvi_hearts !== undefined) {
+          nesviHearts = parseInt(cloudData.nesvi_hearts, 10);
+          localStorage.setItem('nesvi_hearts', nesviHearts.toString());
+        }
+        const cloudLevel = parseInt(cloudData.nesvi_level || '1', 10);
         const cloudDate = cloudData.nesvi_last_date || '';
 
         if (cloudLevel > currentLevel || (cloudLevel === currentLevel && cloudDate > lastUnlockedDate)) {
@@ -765,24 +799,33 @@ function initLoveMeter100Levels() {
           lastUnlockedDate = cloudDate;
           localStorage.setItem('nesvi_level', currentLevel.toString());
           localStorage.setItem('nesvi_last_date', lastUnlockedDate);
-          checkStreakValidity();
-          updateUIState();
         }
+        updateHeartsHeaderUI(nesviHearts);
+        checkStreakValidity();
+        updateUIState();
       }
     })
-    .catch(() => {});
+    .catch(() => {
+      updateHeartsHeaderUI(nesviHearts);
+      checkStreakValidity();
+    });
 
-  function syncProgressToCloud(level, date) {
+  function syncProgressToCloud(level, date, hearts = nesviHearts) {
     try {
       fetch(CLOUD_ENDPOINT, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date })
+        body: JSON.stringify({ nesvi_level: level, nesvi_last_date: date, nesvi_hearts: hearts })
       }).catch(() => {});
     } catch (e) {}
   }
 
   function checkStreakValidity() {
+    if (nesviHearts <= 0) {
+      triggerTotalDestructionState();
+      return;
+    }
+
     if (lastUnlockedDate) {
       const parts = lastUnlockedDate.split('-');
       if (parts.length === 3) {
@@ -790,16 +833,23 @@ function initLoveMeter100Levels() {
         const diffMs = getTodayDateOnly().getTime() - lastDateOnly.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-        // Si faltó 1 día completo o más (diferencia de 2 días o más), ¡SE DESATA LA ANIMACIÓN TRÁGICA DE FUEGO Y QUEMADO DE VALES!
+        // Si faltó 1 día completo o más (diferencia de 2 días o más): ¡PIERDE 1 CORAZÓN!
         if (diffDays >= 2) {
+          nesviHearts = Math.max(0, nesviHearts - 1);
           currentLevel = 1;
           lastUnlockedDate = '';
           localStorage.setItem('nesvi_level', '1');
+          localStorage.setItem('nesvi_hearts', nesviHearts.toString());
           localStorage.removeItem('nesvi_last_date');
-          syncProgressToCloud(1, '');
+          syncProgressToCloud(1, '', nesviHearts);
+          updateHeartsHeaderUI(nesviHearts);
 
           setTimeout(() => {
-            triggerTragicBurnSequence();
+            if (nesviHearts <= 0) {
+              triggerTotalDestructionState();
+            } else {
+              triggerDescuidoBurnSequence(nesviHearts);
+            }
           }, 800);
         }
       }
@@ -1010,17 +1060,101 @@ function showModal(title, body) {
 }
 
 /* ==========================================================================
-   10. Animación Trágica e Intensa de Quemado de Vales y Racha Perdida
+   10. Animación Trágica de Descuido y Destrucción Total (3 Vidas)
    ========================================================================== */
-function triggerTragicBurnSequence() {
+function triggerDescuidoBurnSequence(heartsRemaining) {
   const overlay = document.getElementById('tragicBurnOverlay');
   const canvas = document.getElementById('burnCanvas');
+  const title = document.getElementById('tragicTitle');
+  const message = document.getElementById('tragicMessage');
+  const iconBox = document.getElementById('tragicIconBox');
   const rebuildBtn = document.getElementById('rebuildJourneyBtn');
+  const heartsVisual = document.getElementById('tragicHeartsVisual');
   if (!overlay || !canvas) return;
+
+  if (iconBox) iconBox.innerHTML = '<i class="fa-solid fa-heart-crack"></i>';
+  if (title) title.textContent = '¿Esto solo fue un descuido?';
+  if (message) {
+    message.textContent = `¿Fue solo un descuido en la prisa del día? Te doy una oportunidad más porque mi amor por ti es paciente. Pero ten cuidado... la constelación solo soporta 3 descuidos antes de destruirse para siempre. Te quedan ${heartsRemaining} oportunidad(es) de amor.`;
+  }
+
+  if (heartsVisual) {
+    let html = '';
+    for (let i = 1; i <= 3; i++) {
+      if (i <= heartsRemaining) {
+        html += '<span class="modal-heart-icon lit"><i class="fa-solid fa-heart"></i></span> ';
+      } else {
+        html += '<span class="modal-heart-icon unlit"><i class="fa-solid fa-heart-crack"></i></span> ';
+      }
+    }
+    heartsVisual.innerHTML = html;
+  }
+
+  if (rebuildBtn) {
+    rebuildBtn.disabled = false;
+    rebuildBtn.style.opacity = '1';
+    rebuildBtn.style.cursor = 'pointer';
+    rebuildBtn.style.display = 'inline-flex';
+    rebuildBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Tomar Una Oportunidad Más (Nivel 1)';
+  }
 
   overlay.style.display = 'flex';
   playTragicBurningSound();
 
+  startEmberCanvas(canvas);
+
+  if (rebuildBtn) {
+    rebuildBtn.onclick = () => {
+      overlay.style.transition = 'opacity 0.8s ease';
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.style.opacity = '1';
+        window.location.reload();
+      }, 800);
+    };
+  }
+}
+
+function triggerTotalDestructionState() {
+  const overlay = document.getElementById('tragicBurnOverlay');
+  const canvas = document.getElementById('burnCanvas');
+  const title = document.getElementById('tragicTitle');
+  const message = document.getElementById('tragicMessage');
+  const iconBox = document.getElementById('tragicIconBox');
+  const rebuildBtn = document.getElementById('rebuildJourneyBtn');
+  const heartsVisual = document.getElementById('tragicHeartsVisual');
+  if (!overlay || !canvas) return;
+
+  if (iconBox) iconBox.innerHTML = '<i class="fa-solid fa-skull" style="font-size: 4rem; color: #ff4757;"></i>';
+  if (title) title.textContent = 'Dejaste morir nuestro amor...';
+  if (message) {
+    message.textContent = 'Has dejado romper nuestra racha 3 veces. El fuego consumió las últimas esperanzas y la constelación de Nesvi se ha destruido y apagado por completo. Nada en este sitio web volverá a funcionar jamás.';
+  }
+
+  if (heartsVisual) {
+    heartsVisual.innerHTML = '<span class="modal-heart-icon unlit"><i class="fa-solid fa-heart-crack"></i></span> <span class="modal-heart-icon unlit"><i class="fa-solid fa-heart-crack"></i></span> <span class="modal-heart-icon unlit"><i class="fa-solid fa-heart-crack"></i></span>';
+  }
+
+  if (rebuildBtn) {
+    rebuildBtn.disabled = true;
+    rebuildBtn.style.opacity = '0.4';
+    rebuildBtn.style.cursor = 'not-allowed';
+    rebuildBtn.innerHTML = '<i class="fa-solid fa-skull"></i> La Constelación se ha Apagado para Siempre';
+    rebuildBtn.onclick = null;
+  }
+
+  overlay.style.display = 'flex';
+  playTragicBurningSound();
+  startEmberCanvas(canvas);
+
+  // Desactivar completamente cualquier interacción en todo el sitio web
+  document.body.style.overflow = 'hidden';
+  document.body.style.pointerEvents = 'none';
+  overlay.style.pointerEvents = 'auto';
+}
+
+function startEmberCanvas(canvas) {
   const ctx = canvas.getContext('2d');
   let width = (canvas.width = window.innerWidth);
   let height = (canvas.height = window.innerHeight);
@@ -1030,7 +1164,6 @@ function triggerTragicBurnSequence() {
     height = canvas.height = window.innerHeight;
   });
 
-  // Partículas de brasas y cenizas ardiendo
   const particles = [];
   for (let i = 0; i < 110; i++) {
     particles.push({
@@ -1044,7 +1177,6 @@ function triggerTragicBurnSequence() {
     });
   }
 
-  let animId;
   function renderEmbers() {
     ctx.clearRect(0, 0, width, height);
 
@@ -1070,23 +1202,10 @@ function triggerTragicBurnSequence() {
       ctx.restore();
     });
 
-    animId = requestAnimationFrame(renderEmbers);
+    requestAnimationFrame(renderEmbers);
   }
 
   renderEmbers();
-
-  if (rebuildBtn) {
-    rebuildBtn.onclick = () => {
-      cancelAnimationFrame(animId);
-      overlay.style.transition = 'opacity 0.8s ease';
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        overlay.style.opacity = '1';
-        window.location.reload();
-      }, 800);
-    };
-  }
 }
 
 function playTragicBurningSound() {
@@ -1094,7 +1213,6 @@ function playTragicBurningSound() {
     const audioCtx = getAudioContext();
     if (!audioCtx) return;
 
-    // Tono triste y melancólico con acorde sombrío
     const osc1 = audioCtx.createOscillator();
     const osc2 = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -1102,8 +1220,8 @@ function playTragicBurningSound() {
     osc1.type = 'sawtooth';
     osc2.type = 'sine';
 
-    osc1.frequency.setValueAtTime(110, audioCtx.currentTime); // Nota La (A2)
-    osc2.frequency.setValueAtTime(130.81, audioCtx.currentTime); // Nota Do (C3)
+    osc1.frequency.setValueAtTime(110, audioCtx.currentTime);
+    osc2.frequency.setValueAtTime(130.81, audioCtx.currentTime);
 
     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.5);
@@ -1119,9 +1237,9 @@ function playTragicBurningSound() {
   } catch (e) {}
 }
 
-// Atajo de prueba instantánea: Presiona Shift + B para previsualizar la animación trágica en vivo
+// Atajo de prueba instantánea: Presiona Shift + B para previsualizar la animación de descuido
 window.addEventListener('keydown', (e) => {
   if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
-    triggerTragicBurnSequence();
+    triggerDescuidoBurnSequence(2);
   }
 });
