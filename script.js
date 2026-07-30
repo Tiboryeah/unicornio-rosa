@@ -1118,3 +1118,10 @@ function playTragicBurningSound() {
     osc2.stop(audioCtx.currentTime + 3.5);
   } catch (e) {}
 }
+
+// Atajo de prueba instantánea: Presiona Shift + B para previsualizar la animación trágica en vivo
+window.addEventListener('keydown', (e) => {
+  if (e.shiftKey && (e.key === 'B' || e.key === 'b')) {
+    triggerTragicBurnSequence();
+  }
+});
