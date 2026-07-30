@@ -872,12 +872,16 @@ function initLoveMeter100Levels() {
     }
   }
 
-  checkStreakValidity();
+  if (isLocalEnv) {
+    checkStreakValidity();
+  }
 
   let currentClicks = 0;
   let requiredClicks = currentLevel * 10;
 
-  updateUIState();
+  if (isLocalEnv) {
+    updateUIState();
+  }
   setInterval(updateCountdown, 1000);
 
   function updateCountdown() {
